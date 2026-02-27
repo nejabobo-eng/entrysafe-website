@@ -49,8 +49,10 @@ function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-navy via-navy-dark to-navy py-12 px-4">
-      <div className="max-w-2xl mx-auto">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-navy via-navy-dark to-navy py-12 px-4">
+        <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-4">
@@ -207,10 +209,12 @@ function Contact() {
             <h3 className="font-semibold mb-1">Hours</h3>
             <p className="text-gray-300 text-sm">Mon-Fri: 9AM - 5PM</p>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+                  </div>
+                </div>
+              </div>
+              <Footer />
+            </>
+          );
+        }
 
 export default Contact;
