@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="DEPLOYMENT-ENV-VARS.md" />
     <None Include="DEPLOYMENT-GUIDE.md" />
     <None Include="DNS-CONFIGURATION-GUIDE.md" />
@@ -193,18 +194,19 @@
     <None Include="entrysafe-frontend\src\main.jsx" />
     <None Include="entrysafe-frontend\src\pages\About.jsx" />
     <None Include="entrysafe-frontend\src\pages\AdminDashboard.jsx" />
+    <None Include="entrysafe-frontend\src\pages\AdminTestimonials.jsx" />
     <None Include="entrysafe-frontend\src\pages\Apps.jsx" />
     <None Include="entrysafe-frontend\src\pages\ClientPortal.jsx" />
     <None Include="entrysafe-frontend\src\pages\Contact.jsx" />
     <None Include="entrysafe-frontend\src\pages\EntrySafe.jsx" />
     <None Include="entrysafe-frontend\src\pages\EntrySafeDocs.jsx" />
     <None Include="entrysafe-frontend\src\pages\EntrySafePricing.jsx" />
-    <None Include="entrysafe-frontend\src\pages\Home.jsx" />
     <None Include="entrysafe-frontend\src\pages\KnowledgeHub.jsx" />
     <None Include="entrysafe-frontend\src\pages\LiveFeeds.jsx" />
     <None Include="entrysafe-frontend\src\pages\Login.jsx" />
     <None Include="entrysafe-frontend\src\pages\Register.jsx" />
     <None Include="entrysafe-frontend\src\pages\Services.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Testimonials.jsx" />
     <None Include="entrysafe-frontend\src\services\api.js" />
     <None Include="entrysafe-frontend\tailwind.config.js" />
     <None Include="entrysafe-frontend\vercel.json" />

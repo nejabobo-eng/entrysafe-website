@@ -1,6 +1,7 @@
 import { useAuth } from "../contexts/AuthContext"
 import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
+import { FileText, CreditCard, Settings, Download, Calendar, TrendingUp, Shield, Bell } from "lucide-react"
 
 export default function ClientPortal() {
   const { user } = useAuth()
@@ -8,71 +9,130 @@ export default function ClientPortal() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-5xl font-bold text-navy mb-2">📂 Client Portal</h1>
-            <p className="text-xl text-gray-600">Your personal workspace and documents</p>
+            <h1 className="text-4xl font-bold text-navy mb-2">Welcome to Entry Safe</h1>
+            <p className="text-lg text-gray-600">Your business command center</p>
           </div>
 
-          {/* Welcome Card */}
-          <div className="bg-gradient-to-r from-navy to-navy-dark text-white rounded-2xl shadow-xl p-6 mb-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-200 mb-1">Welcome back,</p>
-                <p className="text-2xl font-bold">{user?.email}</p>
+          {/* Welcome Banner with Subscription Status */}
+          <div className="bg-gradient-to-r from-navy via-navy-dark to-navy-light text-white rounded-2xl shadow-2xl p-6 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
+              <div className="mb-4 md:mb-0">
+                <p className="text-sm text-gray-300 mb-1">Welcome back,</p>
+                <p className="text-3xl font-bold mb-2">{user?.email}</p>
+                <div className="flex items-center gap-2">
+                  <Shield className="text-gold" size={20} />
+                  <span className="text-gray-300">Account Verified</span>
+                </div>
               </div>
-              <div className="bg-white bg-opacity-20 px-6 py-3 rounded-lg backdrop-blur-sm">
-                <p className="text-2xl font-bold">CLIENT</p>
+              <div className="bg-gold text-navy px-6 py-4 rounded-xl shadow-lg">
+                <p className="text-sm font-semibold mb-1">Current Plan</p>
+                <p className="text-2xl font-bold">Free Tier</p>
+                <Link to="/apps" className="text-sm text-navy-dark hover:underline mt-1 block">
+                  Upgrade to Premium →
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* Quick Stats */}
+          {/* Quick Stats Dashboard */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-blue-500 hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">My Documents</p>
-                  <p className="text-4xl font-bold text-navy">12</p>
-                </div>
-                <div className="text-5xl opacity-20">📄</div>
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <FileText className="text-navy" size={32} />
+                <span className="text-green-600 text-sm font-semibold">+3 this month</span>
               </div>
+              <p className="text-gray-500 text-sm mb-1">My Documents</p>
+              <p className="text-4xl font-bold text-navy">12</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-green-500 hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">Active Services</p>
-                  <p className="text-4xl font-bold text-navy">3</p>
-                </div>
-                <div className="text-5xl opacity-20">💼</div>
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <TrendingUp className="text-gold" size={32} />
+                <span className="text-blue-600 text-sm font-semibold">Active</span>
               </div>
+              <p className="text-gray-500 text-sm mb-1">Services</p>
+              <p className="text-4xl font-bold text-navy">3</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-gold hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">Messages</p>
-                  <p className="text-4xl font-bold text-navy">5</p>
-                </div>
-                <div className="text-5xl opacity-20">💬</div>
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <Bell className="text-purple-600" size={32} />
+                <span className="text-red-600 text-sm font-semibold">2 new</span>
               </div>
+              <p className="text-gray-500 text-sm mb-1">Notifications</p>
+              <p className="text-4xl font-bold text-navy">5</p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm mb-1">Last Login</p>
-                  <p className="text-lg font-bold text-navy">Today</p>
-                </div>
-                <div className="text-5xl opacity-20">🕒</div>
+            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+              <div className="flex items-center justify-between mb-4">
+                <Calendar className="text-green-600" size={32} />
+              </div>
+              <p className="text-gray-500 text-sm mb-1">Last Login</p>
+              <p className="text-xl font-bold text-navy">Today, 10:45 AM</p>
+            </div>
+          </div>
+
+          {/* Entry Safe Apps Section */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold text-navy">Entry Safe Apps</h2>
+              <Link to="/apps" className="text-gold hover:text-gold-dark font-semibold flex items-center gap-2">
+                View All Apps →
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* App 1 */}
+              <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                <div className="text-5xl mb-4">📱</div>
+                <h3 className="text-lg font-bold text-navy mb-2">Entry Safe Accounting</h3>
+                <p className="text-sm text-gray-600 mb-4">Complete accounting system</p>
+                <button className="w-full bg-navy/10 text-navy font-semibold py-2 rounded-lg hover:bg-navy/20 transition-colors flex items-center justify-center gap-2">
+                  <Download size={16} />
+                  Download
+                </button>
+              </div>
+
+              {/* App 2 */}
+              <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                <div className="text-5xl mb-4">📄</div>
+                <h3 className="text-lg font-bold text-navy mb-2">Entry Safe Docs</h3>
+                <p className="text-sm text-gray-600 mb-4">Document management</p>
+                <button className="w-full bg-navy/10 text-navy font-semibold py-2 rounded-lg hover:bg-navy/20 transition-colors flex items-center justify-center gap-2">
+                  <Download size={16} />
+                  Download
+                </button>
+              </div>
+
+              {/* App 3 */}
+              <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                <div className="text-5xl mb-4">💰</div>
+                <h3 className="text-lg font-bold text-navy mb-2">Entry Safe Pricing</h3>
+                <p className="text-sm text-gray-600 mb-4">Intelligent pricing engine</p>
+                <button className="w-full bg-navy/10 text-navy font-semibold py-2 rounded-lg hover:bg-navy/20 transition-colors flex items-center justify-center gap-2">
+                  <Download size={16} />
+                  Download
+                </button>
+              </div>
+
+              {/* App 4 */}
+              <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all">
+                <div className="text-5xl mb-4">💾</div>
+                <h3 className="text-lg font-bold text-navy mb-2">SD Storage Helper</h3>
+                <p className="text-sm text-gray-600 mb-4">Storage management</p>
+                <button className="w-full bg-navy/10 text-navy font-semibold py-2 rounded-lg hover:bg-navy/20 transition-colors flex items-center justify-center gap-2">
+                  <Download size={16} />
+                  Download
+                </button>
               </div>
             </div>
           </div>
 
-          {/* Service Cards */}
+          {/* Main Action Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-5xl mb-4">📄</div>

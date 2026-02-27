@@ -28,10 +28,10 @@ export default function About() {
   ];
 
   const milestones = [
-    { year: "2020", event: "Mlu Accounting Services Founded" },
-    { year: "2022", event: "Launched EntrySafe Platform" },
-    { year: "2024", event: "500+ Businesses Registered" },
-    { year: "2026", event: "Expanding Digital Services" }
+    { year: "2025", event: "Mlu Accounting Services Founded" },
+    { year: "2026", event: "Entry Safe Platform Launch" },
+    { year: "2026+", event: "100+ Businesses Registered" },
+    { year: "Future", event: "Expanding Nationally" }
   ];
 
   return (
@@ -57,13 +57,13 @@ export default function About() {
               <h2 className="text-4xl font-bold text-navy mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-700 text-lg leading-relaxed">
                 <p>
-                  EntrySafe was born from a simple observation: South African entrepreneurs face unnecessary complexity when starting and managing their businesses. From confusing CIPC registration processes to overwhelming tax compliance requirements, the barriers to entry were too high.
+                  <strong className="text-navy">Mlu Accounting Services</strong> was founded in <strong>2025</strong> with a clear vision: to provide professional and accessible financial services to small and growing businesses across South Africa.
                 </p>
                 <p>
-                  Founded as part of <strong className="text-navy">Mlu Accounting Services</strong>, EntrySafe is our commitment to making business ownership accessible, compliant, and stress-free. We combine professional accounting expertise with modern technology to deliver services that entrepreneurs actually need.
+                  In <strong>2026</strong>, the <strong className="text-navy">Entry Safe platform</strong> will be officially launched—expanding from traditional accounting services into secure, technology-driven business solutions. Entry Safe combines professional expertise with cutting-edge apps to simplify accounting, document management, and business compliance.
                 </p>
                 <p>
-                  Today, we've helped hundreds of businesses across South Africa navigate registration, taxation, and compliance—allowing them to focus on what they do best: growing their businesses.
+                  We've already registered over <strong>100 businesses</strong> and continue to grow nationally, empowering entrepreneurs with the tools and support they need to succeed.
                 </p>
               </div>
             </div>
@@ -143,15 +143,39 @@ export default function About() {
                 <div className="w-24 h-24 bg-gold rounded-full mx-auto mb-4 flex items-center justify-center text-navy text-4xl font-bold">
                   M
                 </div>
-                <h3 className="text-2xl font-bold text-gold mb-2">Mlu Mncube</h3>
-                <p className="text-gray-200 mb-4">Founder & Principal Accountant</p>
+                <h3 className="text-2xl font-bold text-gold mb-2">Mlungisi Mncube</h3>
+                <p className="text-gray-200 mb-4">Founder of Entry Safe & Mlu Accounting Services</p>
+                <div className="inline-block bg-white/20 px-4 py-2 rounded-lg mb-4">
+                  <p className="text-gold font-semibold">Member of CIBA</p>
+                  <p className="text-sm text-gray-200">Chartered Institute for Business Accountants</p>
+                </div>
               </div>
               <p className="text-lg text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                With a passion for empowering entrepreneurs and years of experience in accounting and business consulting, 
-                Mlu founded Mlu Accounting Services to make professional business services accessible to all South African 
-                entrepreneurs. EntrySafe is the digital extension of that mission—combining expertise with technology to 
-                simplify business compliance.
+                Mlungisi Mncube is a <strong className="text-gold">certified member of the Chartered Institute for Business Accountants (CIBA)</strong>, bringing professional accounting expertise and a passion for empowering South African entrepreneurs. With Mlu Accounting Services, he provides accessible, high-quality financial services to small and growing businesses. Entry Safe represents the evolution of that mission—merging traditional accounting excellence with modern technology to create a complete business management platform.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Authority & Certifications Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-navy mb-4">Professional Accreditation</h2>
+              <p className="text-lg text-gray-600">Certified expertise you can trust</p>
+            </div>
+
+            <div className="flex justify-center">
+              <div className="bg-gradient-to-br from-navy to-navy-dark p-12 rounded-2xl shadow-2xl text-white max-w-2xl text-center">
+                <div className="w-24 h-24 bg-gold rounded-full mx-auto mb-6 flex items-center justify-center">
+                  <Award className="text-navy" size={48} />
+                </div>
+                <h3 className="text-3xl font-bold text-gold mb-4">Proud Member of CIBA</h3>
+                <p className="text-xl mb-4">Chartered Institute for Business Accountants</p>
+                <p className="text-gray-300 leading-relaxed">
+                  Our founder, Mlungisi Mncube, is a certified member of CIBA, ensuring that all our accounting services meet the highest professional standards. This accreditation demonstrates our commitment to excellence, ethical practice, and continuous professional development in the field of business accounting.
+                </p>
+              </div>
             </div>
           </div>
         </section>

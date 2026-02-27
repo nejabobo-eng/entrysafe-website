@@ -59,6 +59,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Why Choose Entry Safe Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-navy mb-4">Why Choose Entry Safe?</h2>
+            <p className="text-lg text-gray-600">Built by professionals, trusted by entrepreneurs</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Reason 1 - Certified */}
+            <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gold rounded-full mb-4">
+                <Award className="text-navy" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-navy mb-2">CIBA Certified</h3>
+              <p className="text-gray-600">
+                Member of the Chartered Institute for Business Accountants
+              </p>
+            </div>
+
+            {/* Reason 2 - Secure Platform */}
+            <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-navy rounded-full mb-4">
+                <Lock className="text-gold" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-navy mb-2">Secure Platform</h3>
+              <p className="text-gray-600">
+                Bank-level encryption and security for all your business data
+              </p>
+            </div>
+
+            {/* Reason 3 - 100+ Businesses */}
+            <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gold rounded-full mb-4">
+                <Users className="text-navy" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-navy mb-2">100+ Businesses</h3>
+              <p className="text-gray-600">
+                Trusted by growing South African entrepreneurs nationwide
+              </p>
+            </div>
+
+            {/* Reason 4 - Built by Professionals */}
+            <div className="text-center p-6 bg-gradient-to-br from-gray-50 to-white rounded-xl shadow-lg hover:shadow-2xl transition-all">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-navy rounded-full mb-4">
+                <Shield className="text-gold" size={32} />
+              </div>
+              <h3 className="text-xl font-bold text-navy mb-2">Built by Professionals</h3>
+              <p className="text-gray-600">
+                Professional accounting expertise meets modern technology
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -174,7 +230,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* App 1 */}
             <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">📱</div>
+              <div className="text-5xl mb-4">≡ƒô▒</div>
               <h3 className="text-2xl font-bold mb-3">Entry Safe Accounting</h3>
               <p className="text-gray-300 mb-6">
                 Complete accounting system with income tracking, invoicing, financial reports, and SARS compliance
@@ -187,7 +243,7 @@ export default function Home() {
 
             {/* App 2 */}
             <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">📄</div>
+              <div className="text-5xl mb-4">≡ƒôä</div>
               <h3 className="text-2xl font-bold mb-3">Entry Safe Docs</h3>
               <p className="text-navy-dark mb-6">
                 Smart document management with AI-powered categorization, OCR scanning, and secure cloud storage
@@ -200,7 +256,7 @@ export default function Home() {
 
             {/* App 3 */}
             <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">💰</div>
+              <div className="text-5xl mb-4">≡ƒÆ░</div>
               <h3 className="text-2xl font-bold mb-3">Entry Safe Pricing</h3>
               <p className="text-navy-dark mb-6">
                 Intelligent pricing engine with quote generation, profit analysis, and competitive insights
@@ -213,7 +269,7 @@ export default function Home() {
 
             {/* App 4 */}
             <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">💾</div>
+              <div className="text-5xl mb-4">≡ƒÆ╛</div>
               <h3 className="text-2xl font-bold mb-3">SD Storage Helper</h3>
               <p className="text-gray-300 mb-6">
                 Advanced storage management with duplicate detection, AI organization, and space optimization
@@ -282,7 +338,7 @@ export default function Home() {
               href="tel:+27622475462"
               className="inline-flex items-center bg-white text-navy font-bold px-8 py-4 rounded-lg hover:bg-gray-100 transition-all shadow-lg"
             >
-              📞 Call: 062 247 5462
+              ≡ƒô₧ Call: 062 247 5462
             </a>
           </div>
         </div>

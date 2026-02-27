@@ -2,10 +2,13 @@ import { useState } from "react"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../lib/firebase"
 import { useNavigate, Link } from "react-router-dom"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -17,9 +20,15 @@ export default function Login() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      navigate("/")
+
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true')
+        localStorage.setItem('userEmail', email)
+      }
+
+      navigate("/portal")
     } catch (error) {
-      setError(error.message)
+      setError("Invalid email or password. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -61,14 +70,42 @@ export default function Login() {
 
           <div>
             <label className="block text-gray-700 font-medium mb-2">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent transition-all pr-12"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-navy transition-colors"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <label className="flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="mr-2 h-4 w-4 text-gold focus:ring-gold border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700">Remember Me</span>
+            </label>
+
+            <Link 
+              to="/forgot-password" 
+              className="text-sm text-navy hover:text-gold font-semibold transition-colors"
+            >
+              Forgot Password?
+            </Link>
           </div>
 
           <button 

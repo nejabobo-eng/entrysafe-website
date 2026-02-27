@@ -4,6 +4,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Home from "./pages/Home"
 import AdminDashboard from "./pages/AdminDashboard"
+import AdminTestimonials from "./pages/AdminTestimonials"
 import ClientPortal from "./pages/ClientPortal"
 import Contact from "./pages/Contact"
 import Services from "./pages/Services"
@@ -14,6 +15,7 @@ import EntrySafe from "./pages/EntrySafe"
 import EntrySafeDocs from "./pages/EntrySafeDocs"
 import EntrySafePricing from "./pages/EntrySafePricing"
 import Apps from "./pages/Apps"
+import Testimonials from "./pages/Testimonials"
 import ProtectedRoute from "./components/ProtectedRoute"
 import AdminRoute from "./components/AdminRoute"
 import ClientRoute from "./components/ClientRoute"
@@ -35,6 +37,7 @@ function App() {
           <Route path="/entry-safe-docs" element={<EntrySafeDocs />} />
           <Route path="/entry-safe-pricing" element={<EntrySafePricing />} />
           <Route path="/apps" element={<Apps />} />
+          <Route path="/testimonials" element={<Testimonials />} />
 
           {/* Home Route - Public for all visitors */}
           <Route 
@@ -48,6 +51,14 @@ function App() {
             element={
               <AdminRoute>
                 <AdminDashboard />
+              </AdminRoute>
+            } 
+          />
+          <Route 
+            path="/admin/testimonials" 
+            element={
+              <AdminRoute>
+                <AdminTestimonials />
               </AdminRoute>
             } 
           />

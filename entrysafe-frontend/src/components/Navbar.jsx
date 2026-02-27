@@ -68,6 +68,10 @@ export default function Navbar() {
               ℹ️ About
             </Link>
 
+            <Link to="/testimonials" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
+              ⭐ Testimonials
+            </Link>
+
             <Link to="/contact" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
               📞 Contact
             </Link>

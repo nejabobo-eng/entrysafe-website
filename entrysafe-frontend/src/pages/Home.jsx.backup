@@ -1,0 +1,671 @@
+import { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom"
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../lib/firebase"
+import { Shield, Eye, EyeOff, CheckCircle, Lock, Award } from "lucide-react"
+
+export default function Home() {
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    acceptTerms: false
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      if (rememberMe) {
+        localStorage.setItem('rememberMe', 'true');
+      }
+      navigate("/portal");
+    } catch (error) {
+      setError("Invalid email or password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      setError("Please accept the terms and conditions");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      navigate("/portal");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col lg:flex-row">
+
+        return (
+          <div className="min-h-screen flex flex-col lg:flex-row">
+            {/* Left Side - Branding */}
+            <div className="lg:w-1/2 bg-gradient-to-br from-navy via-navy-dark to-navy text-white flex items-center justify-center p-8 lg:p-16 relative overflow-hidden">
+              {/* Background Decorations */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute top-20 left-10 w-72 h-72 bg-gold rounded-full filter blur-3xl"></div>
+                <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-light rounded-full filter blur-3xl"></div>
+              </div>
+
+              <div className="relative z-10 max-w-lg text-center lg:text-left">
+                {/* Logo */}
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gold rounded-2xl mb-8 shadow-2xl">
+                  <Shield className="text-navy" size={40} />
+                </div>
+
+                <h1 className="text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+                  Entry Safe
+                </h1>
+
+                <p className="text-2xl lg:text-3xl text-gold font-semibold mb-8">
+                  Secure. Smart. Professional.
+                </p>
+
+                <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+                  Your complete business platform for accounting, document management, and professional services—all secured and simplified for South African entrepreneurs.
+                </p>
+
+                {/* Trust Badges */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle className="text-gold flex-shrink-0" size={24} />
+                    <span className="text-gray-200">100+ Businesses Registered</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Award className="text-gold flex-shrink-0" size={24} />
+                    <span className="text-gray-200">CIBA Certified Professional</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Lock className="text-gold flex-shrink-0" size={24} />
+                    <span className="text-gray-200">Bank-Level Security</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side - Login/Sign Up Forms */}
+            <div className="lg:w-1/2 flex items-center justify-center p-8 lg:p-16 bg-gray-50">
+              <div className="w-full max-w-md">
+                {/* Form Toggle */}
+                <div className="flex gap-4 mb-8">
+                  <button
+                    onClick={() => setIsLogin(true)}
+                    className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
+                      isLogin
+                        ? 'bg-navy text-white shadow-lg'
+                        : 'bg-white text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => setIsLogin(false)}
+                    className={`flex-1 py-3 rounded-lg font-semibold transition-all ${
+                      !isLogin
+                        ? 'bg-navy text-white shadow-lg'
+                        : 'bg-white text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    Sign Up
+                  </button>
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                    <p className="font-semibold">Error</p>
+                    <p className="text-sm">{error}</p>
+                  </div>
+                )}
+
+                {/* Login Form */}
+                {isLogin ? (
+                  <form onSubmit={handleLogin} className="space-y-6 bg-white p-8 rounded-2xl shadow-xl">
+                    <div>
+                      <h2 className="text-3xl font-bold text-navy mb-2">Welcome Back</h2>
+                      <p className="text-gray-600">Login to access your account</p>
+                    </div>
+
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-semibold text-navy mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-semibold text-navy mb-2">
+                        Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all pr-12"
+                          placeholder="••••••••"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-navy"
+                        >
+                          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          className="mr-2 h-4 w-4 text-gold focus:ring-gold border-gray-300 rounded"
+                        />
+                        <span className="text-sm text-gray-700">Remember Me</span>
+                      </label>
+
+                      <Link to="/forgot-password" className="text-sm text-navy hover:text-gold font-semibold">
+                        Forgot Password?
+                      </Link>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-3 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-navy to-navy-dark hover:from-navy-dark hover:to-navy transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {loading ? 'Logging in...' : 'Login'}
+                    </button>
+
+                    <p className="text-center text-gray-600">
+                      Don't have an account?{' '}
+                      <button
+                        type="button"
+                        onClick={() => setIsLogin(false)}
+                        className="text-navy font-semibold hover:text-gold"
+                      >
+                        Sign Up
+                      </button>
+                    </p>
+                  </form>
+                ) : (
+                  /* Sign Up Form */
+                  <form onSubmit={handleSignUp} className="space-y-6 bg-white p-8 rounded-2xl shadow-xl">
+                    <div>
+                      <h2 className="text-3xl font-bold text-navy mb-2">Create Account</h2>
+                      <p className="text-gray-600">Start your journey with Entry Safe</p>
+                    </div>
+
+                    <div>
+                      <label htmlFor="fullName" className="block text-sm font-semibold text-navy mb-2">
+                        Full Name
+                      </label>
+                      <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all"
+                        placeholder="John Doe"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="signupEmail" className="block text-sm font-semibold text-navy mb-2">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="signupEmail"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="signupPassword" className="block text-sm font-semibold text-navy mb-2">
+                        Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="signupPassword"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all pr-12"
+                          placeholder="••••••••"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-navy"
+                        >
+                          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-semibold text-navy mb-2">
+                        Confirm Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          required
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold focus:border-gold transition-all pr-12"
+                          placeholder="••••••••"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-navy"
+                        >
+                          {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="flex items-start">
+                        <input
+                          type="checkbox"
+                          name="acceptTerms"
+                          checked={formData.acceptTerms}
+                          onChange={handleChange}
+                          className="mr-2 h-4 w-4 text-gold focus:ring-gold border-gray-300 rounded mt-1"
+                        />
+                        <span className="text-sm text-gray-700">
+                          I accept the{' '}
+                          <Link to="/terms" className="text-navy hover:text-gold font-semibold">
+                            Terms and Conditions
+                          </Link>
+                        </span>
+                      </label>
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="w-full py-3 px-6 rounded-lg font-semibold text-white bg-gradient-to-r from-navy to-navy-dark hover:from-navy-dark hover:to-navy transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {loading ? 'Creating Account...' : 'Sign Up'}
+                    </button>
+
+                    <p className="text-center text-gray-600">
+                      Already have an account?{' '}
+                      <button
+                        type="button"
+                        onClick={() => setIsLogin(true)}
+                        className="text-navy font-semibold hover:text-gold"
+                      >
+                        Login
+                      </button>
+                    </p>
+                  </form>
+                )}
+
+                {/* Additional Links */}
+                <div className="mt-8 text-center space-y-2 text-sm text-gray-600">
+                  <div className="flex justify-center gap-4">
+                    <Link to="/about" className="hover:text-navy">About Us</Link>
+                    <span>•</span>
+                    <Link to="/services" className="hover:text-navy">Services</Link>
+                    <span>•</span>
+                    <Link to="/apps" className="hover:text-navy">Apps</Link>
+                    <span>•</span>
+                    <Link to="/contact" className="hover:text-navy">Contact</Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+        {/* Background Decorations */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-gold rounded-full filter blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold-light rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+              Empower Your Business with <span className="text-gold">EntrySafe</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 mb-8">
+              Professional business services, secure document management, and powerful apps - all in one platform
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/apps"
+                className="inline-flex items-center bg-gold text-navy font-bold px-8 py-4 rounded-lg hover:bg-gold-light transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Explore Our Apps
+                <ArrowRight className="ml-2" size={20} />
+              </Link>
+              <Link
+                to="/services"
+                className="inline-flex items-center bg-white text-navy font-bold px-8 py-4 rounded-lg hover:bg-gray-100 transition-all shadow-lg"
+              >
+                View Services
+              </Link>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-300">
+              <div className="flex items-center space-x-2">
+                <Shield className="text-gold" size={20} />
+                <span>Secure & Encrypted</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Award className="text-gold" size={20} />
+                <span>CIBA Certified</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <CheckCircle className="text-gold" size={20} />
+                <span>CIPC Registered</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-navy mb-4">
+              Everything Your Business Needs
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              From company registration to AI-powered apps, we provide comprehensive solutions for South African entrepreneurs
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-navy to-navy-light w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <FileText className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">Business Services</h3>
+              <p className="text-gray-600 mb-4">
+                Company registration, tax compliance, bookkeeping, and professional business support
+              </p>
+              <Link to="/services" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Learn More <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-gold to-gold-dark w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Smartphone className="text-navy" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">Mobile & Desktop Apps</h3>
+              <p className="text-gray-600 mb-4">
+                Powerful Android and Windows apps for accounting, documents, pricing, and storage management
+              </p>
+              <Link to="/apps" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Explore Apps <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-navy to-navy-light w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Lock className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">Secure Client Portal</h3>
+              <p className="text-gray-600 mb-4">
+                Access your documents, track services, and manage your business securely from anywhere
+              </p>
+              <Link to="/portal" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Access Portal <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-gold to-gold-dark w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Calculator className="text-navy" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">Tax & Compliance</h3>
+              <p className="text-gray-600 mb-4">
+                SARS registration, tax returns, PAYE, VAT, and complete compliance solutions
+              </p>
+              <Link to="/services" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Get Started <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-navy to-navy-light w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Zap className="text-white" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">AI-Powered Tools</h3>
+              <p className="text-gray-600 mb-4">
+                Intelligent document analysis, smart pricing, and automated bookkeeping with AI assistance
+              </p>
+              <Link to="/apps" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Try AI Tools <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="bg-white rounded-xl shadow-lg p-8 hover:shadow-2xl transition-all transform hover:-translate-y-1">
+              <div className="bg-gradient-to-br from-gold to-gold-dark w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Users className="text-navy" size={32} />
+              </div>
+              <h3 className="text-2xl font-bold text-navy mb-3">Expert Support</h3>
+              <p className="text-gray-600 mb-4">
+                CIBA certified accountant providing personalized guidance and professional support
+              </p>
+              <Link to="/contact" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+                Contact Us <ArrowRight size={16} className="ml-1" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Apps Showcase Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-navy mb-4">
+              Our Powerful App Suite
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Four specialized apps designed to streamline your business operations
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* App 1 */}
+            <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
+              <div className="text-5xl mb-4">📱</div>
+              <h3 className="text-2xl font-bold mb-3">Entry Safe Accounting</h3>
+              <p className="text-gray-300 mb-6">
+                Complete accounting system with income tracking, invoicing, financial reports, and SARS compliance
+              </p>
+              <div className="flex gap-3">
+                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+              </div>
+            </div>
+
+            {/* App 2 */}
+            <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
+              <div className="text-5xl mb-4">📄</div>
+              <h3 className="text-2xl font-bold mb-3">Entry Safe Docs</h3>
+              <p className="text-navy-dark mb-6">
+                Smart document management with AI-powered categorization, OCR scanning, and secure cloud storage
+              </p>
+              <div className="flex gap-3">
+                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+              </div>
+            </div>
+
+            {/* App 3 */}
+            <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
+              <div className="text-5xl mb-4">💰</div>
+              <h3 className="text-2xl font-bold mb-3">Entry Safe Pricing</h3>
+              <p className="text-navy-dark mb-6">
+                Intelligent pricing engine with quote generation, profit analysis, and competitive insights
+              </p>
+              <div className="flex gap-3">
+                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+              </div>
+            </div>
+
+            {/* App 4 */}
+            <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
+              <div className="text-5xl mb-4">💾</div>
+              <h3 className="text-2xl font-bold mb-3">SD Storage Helper</h3>
+              <p className="text-gray-300 mb-6">
+                Advanced storage management with duplicate detection, AI organization, and space optimization
+              </p>
+              <div className="flex gap-3">
+                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              to="/apps"
+              className="inline-flex items-center bg-navy text-white font-bold px-8 py-4 rounded-lg hover:bg-navy-dark transition-all shadow-lg hover:shadow-xl"
+            >
+              Download Apps & View Pricing
+              <ArrowRight className="ml-2" size={20} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="text-4xl font-bold text-navy mb-2">500+</div>
+              <div className="text-gray-600">Businesses Registered</div>
+            </div>
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="text-4xl font-bold text-gold mb-2">1,000+</div>
+              <div className="text-gray-600">Tax Returns Filed</div>
+            </div>
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="text-4xl font-bold text-navy mb-2">4</div>
+              <div className="text-gray-600">Powerful Apps</div>
+            </div>
+            <div className="bg-white rounded-xl p-8 shadow-lg">
+              <div className="text-4xl font-bold text-gold mb-2">24/7</div>
+              <div className="text-gray-600">Support Available</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-r from-gold to-gold-dark">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-navy mb-6">
+            Ready to Transform Your Business?
+          </h2>
+          <p className="text-xl text-navy-dark mb-8">
+            Join hundreds of South African entrepreneurs who trust EntrySafe for their business needs
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/contact"
+              className="inline-flex items-center bg-navy text-white font-bold px-8 py-4 rounded-lg hover:bg-navy-dark transition-all shadow-lg hover:shadow-xl"
+            >
+              Get Started Today
+              <ArrowRight className="ml-2" size={20} />
+            </Link>
+            <a
+              href="tel:+27622475462"
+              className="inline-flex items-center bg-white text-navy font-bold px-8 py-4 rounded-lg hover:bg-gray-100 transition-all shadow-lg"
+            >
+              📞 Call: 062 247 5462
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+    </>
+  )
+}

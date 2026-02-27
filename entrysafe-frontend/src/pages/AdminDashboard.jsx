@@ -73,7 +73,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Management Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all transform hover:scale-105">
               <div className="text-5xl mb-4">👥</div>
               <h3 className="text-2xl font-bold mb-2">User Management</h3>
@@ -90,6 +90,15 @@ export default function AdminDashboard() {
               <button className="bg-white text-green-600 font-bold py-3 px-6 rounded-lg hover:bg-green-50 transition-colors w-full">
                 Manage Docs
               </button>
+            </div>
+
+            <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all transform hover:scale-105">
+              <div className="text-5xl mb-4">⭐</div>
+              <h3 className="text-2xl font-bold mb-2">Testimonials</h3>
+              <p className="text-purple-100 mb-6">Review and approve pending testimonials</p>
+              <Link to="/admin/testimonials" className="block bg-white text-purple-600 font-bold py-3 px-6 rounded-lg hover:bg-purple-50 transition-colors text-center">
+                Manage Testimonials
+              </Link>
             </div>
 
             <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all transform hover:scale-105">

@@ -100,15 +100,19 @@ export default function Apps() {
     },
     {
       id: "annual",
-      name: "Annual Premium",
-      price: 4990,
+      name: "Annual Professional",
+      price: 4999,
       period: "per year",
-      savings: "Save R1,000!",
+      savings: "Best Value - Save with Annual Billing!",
       features: [
-        "✨ All Premium features",
-        "2 months FREE",
-        "Annual billing discount",
-        "Priority onboarding",
+        "✨ All Premium features included",
+        "✨ Full access to all Entry Safe apps",
+        "✨ SD Storage Helper premium",
+        "Ad-free experience",
+        "Unlimited cloud storage",
+        "Priority support",
+        "Multi-device sync",
+        "Advanced AI features",
         "Dedicated account manager"
       ]
     }
@@ -135,9 +139,21 @@ export default function Apps() {
           <h1 className="text-5xl font-bold text-navy mb-6">
             📱 Entry Safe Apps
           </h1>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-4">
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-6">
             Download our complete suite of business management apps for Android and Windows
           </p>
+
+          {/* Important Pricing Disclaimer */}
+          <div className="bg-gold/20 border-2 border-gold rounded-xl p-6 max-w-4xl mx-auto mb-4">
+            <p className="text-lg font-semibold text-navy mb-2">
+              ⚠️ Important: Pricing Clarification
+            </p>
+            <p className="text-gray-800">
+              <strong>The pricing below applies to Entry Safe Applications (Software Platform) only.</strong><br />
+              Accounting services, IT support, and business consulting are quoted separately based on your needs.
+            </p>
+          </div>
+
           <p className="text-2xl font-bold text-gold">
             ✨ One Subscription = All Apps Unlocked ✨
           </p>

@@ -12,6 +12,18 @@ export default function EntrySafePricing() {
           <h1 className="text-5xl font-bold text-navy mb-6">
             💰 Entry Safe Pricing
           </h1>
+
+          {/* Important Pricing Disclaimer */}
+          <div className="bg-gold/20 border-2 border-gold rounded-xl p-6 max-w-4xl mx-auto mb-6">
+            <p className="text-lg font-semibold text-navy mb-2">
+              ⚠️ Important: Pricing Clarification
+            </p>
+            <p className="text-gray-800 text-lg">
+              <strong>The pricing below applies to Entry Safe Applications (Software Platform) only.</strong><br />
+              Accounting & IT services are quoted separately based on your business needs.
+            </p>
+          </div>
+
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-4">
             Simple, transparent pricing. One subscription unlocks everything.
           </p>
@@ -59,51 +71,47 @@ export default function EntrySafePricing() {
         </div>
 
         {/* Pricing Tiers */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {/* Free Plan */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          {/* Starter Plan */}
           <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-200">
             <div className="text-center mb-6">
-              <h3 className="text-3xl font-bold text-navy mb-2">Free Plan</h3>
-              <p className="text-5xl font-bold text-gray-700 mb-2">R0</p>
-              <p className="text-gray-600">Forever free</p>
+              <h3 className="text-3xl font-bold text-navy mb-2">Starter</h3>
+              <p className="text-5xl font-bold text-navy mb-2">R199</p>
+              <p className="text-gray-600">per month</p>
             </div>
 
             <ul className="space-y-4 mb-8">
               <li className="flex items-start">
                 <span className="text-green-600 text-xl mr-3">✓</span>
-                <span>Access to Entry Safe Website</span>
+                <span>✨ All 4 apps unlocked</span>
               </li>
               <li className="flex items-start">
                 <span className="text-green-600 text-xl mr-3">✓</span>
-                <span>Knowledge Hub articles</span>
+                <span>Basic AI features</span>
               </li>
               <li className="flex items-start">
                 <span className="text-green-600 text-xl mr-3">✓</span>
-                <span>Live Feeds (ZAR rates & news)</span>
+                <span>Limited cloud storage (5GB)</span>
               </li>
               <li className="flex items-start">
                 <span className="text-green-600 text-xl mr-3">✓</span>
-                <span>Contact support</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 text-xl mr-3">✗</span>
-                <span className="text-gray-500">Entry Safe accounting app</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-red-600 text-xl mr-3">✗</span>
-                <span className="text-gray-500">Entry Safe Docs</span>
+                <span>Email support</span>
               </li>
               <li className="flex items-start">
                 <span className="text-yellow-600 text-xl mr-3">⚠</span>
-                <span className="text-gray-500">Android app has ads</span>
+                <span className="text-gray-500">Ads displayed in apps</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-yellow-600 text-xl mr-3">⚠</span>
+                <span className="text-gray-500">Single device only</span>
               </li>
             </ul>
 
             <a
               href="/register"
-              className="block w-full bg-gray-200 text-navy text-center px-6 py-3 rounded-lg font-bold hover:bg-gray-300 transition-colors"
+              className="block w-full bg-navy text-white text-center px-6 py-3 rounded-lg font-bold hover:bg-navy-dark transition-colors"
             >
-              Get Started Free
+              Start with Starter
             </a>
           </div>
 
@@ -116,7 +124,7 @@ export default function EntrySafePricing() {
             </div>
 
             <div className="text-center mb-6 text-white">
-              <h3 className="text-3xl font-bold mb-2">Premium All-Access</h3>
+              <h3 className="text-3xl font-bold mb-2">Premium</h3>
               <p className="text-5xl font-bold mb-2">R499</p>
               <p className="text-gray-200">per month</p>
               <p className="text-gold font-semibold mt-2">💎 Unlock Everything</p>
@@ -125,27 +133,23 @@ export default function EntrySafePricing() {
             <ul className="space-y-4 mb-8 text-white">
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span>✨ All Free features included</span>
+                <span>✨ All Entry Safe apps unlocked</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span><strong>Entry Safe</strong> - Full accounting system</span>
+                <span>✨ SD Storage Helper premium</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span><strong>Entry Safe Docs</strong> - Document management</span>
+                <span><strong>Ad-Free</strong> experience</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span>Android + Windows apps</span>
+                <span>Unlimited cloud storage</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span><strong>Ad-Free</strong> on all platforms</span>
-              </li>
-              <li className="flex items-start">
-                <span className="text-gold text-xl mr-3">✓</span>
-                <span>Priority customer support</span>
+                <span>Priority support</span>
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
@@ -153,7 +157,7 @@ export default function EntrySafePricing() {
               </li>
               <li className="flex items-start">
                 <span className="text-gold text-xl mr-3">✓</span>
-                <span>Advanced reporting & analytics</span>
+                <span>Advanced AI features</span>
               </li>
             </ul>
 
@@ -161,7 +165,57 @@ export default function EntrySafePricing() {
               href="/register"
               className="block w-full bg-gold text-navy text-center px-6 py-3 rounded-lg font-bold hover:shadow-2xl transition-all transform hover:scale-105"
             >
-              🚀 Start Premium Trial
+              🚀 Start Premium Now
+            </a>
+          </div>
+
+          {/* Annual Professional Plan */}
+          <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-gold relative">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+              <span className="bg-green-600 text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg">
+                💰 BEST VALUE
+              </span>
+            </div>
+
+            <div className="text-center mb-6">
+              <h3 className="text-3xl font-bold text-navy mb-2">Annual Professional</h3>
+              <p className="text-5xl font-bold text-gold mb-2">R4,999</p>
+              <p className="text-gray-600 mb-2">per year</p>
+              <p className="text-green-600 font-semibold text-sm">Billed annually - Best for growing businesses</p>
+            </div>
+
+            <ul className="space-y-4 mb-8">
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span>✨ All Premium features included</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span>Full access to all Entry Safe apps</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span>Advanced business tools</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span>Priority assistance</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span>Expanded features</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-600 text-xl mr-3">✓</span>
+                <span><strong>Dedicated account manager</strong></span>
+              </li>
+            </ul>
+
+            <a
+              href="/register"
+              className="block w-full bg-gradient-to-r from-gold to-gold-dark text-navy text-center px-6 py-3 rounded-lg font-bold hover:shadow-2xl transition-all"
+            >
+              Subscribe Annually
             </a>
           </div>
         </div>
