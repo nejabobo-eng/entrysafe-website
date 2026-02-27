@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Entry Safe Website.vcxproj" Id="6a3fd6f8-4798-4712-87f2-6e871af61cc5" />
+</Solution>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6a3fd6f8-4798-4712-87f2-6e871af61cc5}</ProjectGuid>
+    <RootNamespace>EntrySafeWebsite</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="DEPLOYMENT-ENV-VARS.md" />
+    <None Include="DEPLOYMENT-GUIDE.md" />
+    <None Include="DNS-CONFIGURATION-GUIDE.md" />
+    <None Include="entrysafe-backend\.env" />
+    <None Include="entrysafe-backend\.env.example" />
+    <None Include="entrysafe-backend\.gitignore" />
+    <None Include="entrysafe-backend\4-TIER-SYSTEM-COMPLETE.md" />
+    <None Include="entrysafe-backend\AI-INTEGRATION-GUIDE.md" />
+    <None Include="entrysafe-backend\AI-INTEGRATION-SUMMARY.md" />
+    <None Include="entrysafe-backend\AI-QUICK-REFERENCE.md" />
+    <None Include="entrysafe-backend\app\auth.py" />
+    <None Include="entrysafe-backend\app\database.py" />
+    <None Include="entrysafe-backend\app\main.py" />
+    <None Include="entrysafe-backend\app\models.py" />
+    <None Include="entrysafe-backend\app\routers\admin.py" />
+    <None Include="entrysafe-backend\app\routers\ai.py" />
+    <None Include="entrysafe-backend\app\routers\contact.py" />
+    <None Include="entrysafe-backend\app\routers\documents.py" />
+    <None Include="entrysafe-backend\app\routers\users.py" />
+    <None Include="entrysafe-backend\app\routers\__init__.py" />
+    <None Include="entrysafe-backend\app\__init__.py" />
+    <None Include="entrysafe-backend\CONTACT-API.md" />
+    <None Include="entrysafe-backend\flutter-client\ai_assistant_example.dart" />
+    <None Include="entrysafe-backend\flutter-client\entry_safe_ai_service.dart" />
+    <None Include="entrysafe-backend\OPENAI-BILLING-REQUIRED.md" />
+    <None Include="entrysafe-backend\OPENAI-KEYS-CONFIGURED.md" />
+    <None Include="entrysafe-backend\PAYFAST-INTEGRATION.md" />
+    <None Include="entrysafe-backend\PHASE-5-COMPLETE.md" />
+    <None Include="entrysafe-backend\PLATFORM-COMPLETE-SUMMARY.md" />
+    <None Include="entrysafe-backend\PLATFORM-STATUS-FINAL.md" />
+    <None Include="entrysafe-backend\QUICK-START-CARD.md" />
+    <None Include="entrysafe-backend\QUICK-START.md" />
+    <None Include="entrysafe-backend\README.md" />
+    <None Include="entrysafe-backend\setup-ai.bat" />
+    <None Include="entrysafe-backend\setup-ai.sh" />
+    <None Include="entrysafe-backend\SUBSCRIPTION-PLANS-COMPARISON.md" />
+    <None Include="entrysafe-backend\test_openai_keys.py" />
+    <None Include="entrysafe-backend\windows-client\AIAssistantWindow.cs" />
+    <None Include="entrysafe-backend\windows-client\EntrySafeAIService.cs" />
+    <None Include="entrysafe-frontend\.env" />
+    <None Include="entrysafe-frontend\.env.example" />
+    <None Include="entrysafe-frontend\FLUTTER-APP-ICONS-GUIDE.md" />
+    <None Include="entrysafe-frontend\ICON-QUICK-REF.md" />
+    <None Include="entrysafe-frontend\index.html" />
+    <None Include="entrysafe-frontend\LOGO-INTEGRATION-GUIDE.md" />
+    <None Include="entrysafe-frontend\LOGO-QUICK-START.md" />
+    <None Include="entrysafe-frontend\PHASE-1-COMPLETE.md" />
+    <None Include="entrysafe-frontend\PHASE-2-COMPLETE.md" />
+    <None Include="entrysafe-frontend\PHASE-3-COMPLETE.md" />
+    <None Include="entrysafe-frontend\PHASE-4-COMPLETE.md" />
+    <None Include="entrysafe-frontend\postcss.config.js" />
+    <None Include="entrysafe-frontend\public\logo-test.html" />
+    <None Include="entrysafe-frontend\SETUP-COMPLETE.md" />
+    <None Include="entrysafe-frontend\src\App.jsx" />
+    <None Include="entrysafe-frontend\src\components\AdminRoute.jsx" />
+    <None Include="entrysafe-frontend\src\components\ClientRoute.jsx" />
+    <None Include="entrysafe-frontend\src\components\Footer.jsx" />
+    <None Include="entrysafe-frontend\src\components\Logo.jsx" />
+    <None Include="entrysafe-frontend\src\components\Navbar.jsx" />
+    <None Include="entrysafe-frontend\src\components\ProtectedRoute.jsx" />
+    <None Include="entrysafe-frontend\src\contexts\AuthContext.jsx" />
+    <None Include="entrysafe-frontend\src\index.css" />
+    <None Include="entrysafe-frontend\src\lib\firebase.js" />
+    <None Include="entrysafe-frontend\src\main.jsx" />
+    <None Include="entrysafe-frontend\src\pages\About.jsx" />
+    <None Include="entrysafe-frontend\src\pages\AdminDashboard.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Apps.jsx" />
+    <None Include="entrysafe-frontend\src\pages\ClientPortal.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Contact.jsx" />
+    <None Include="entrysafe-frontend\src\pages\EntrySafe.jsx" />
+    <None Include="entrysafe-frontend\src\pages\EntrySafeDocs.jsx" />
+    <None Include="entrysafe-frontend\src\pages\EntrySafePricing.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Home.jsx" />
+    <None Include="entrysafe-frontend\src\pages\KnowledgeHub.jsx" />
+    <None Include="entrysafe-frontend\src\pages\LiveFeeds.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Login.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Register.jsx" />
+    <None Include="entrysafe-frontend\src\pages\Services.jsx" />
+    <None Include="entrysafe-frontend\src\services\api.js" />
+    <None Include="entrysafe-frontend\tailwind.config.js" />
+    <None Include="entrysafe-frontend\vercel.json" />
+    <None Include="entrysafe-frontend\vite.config.js" />
+    <None Include="entrysafe-frontend\WINDOWS-ICO-GUIDE.md" />
+    <None Include="LAUNCH-CHECKLIST.md" />
+    <None Include="OPENAI-USAGE-GUIDE.md" />
+    <None Include="QUICK-REFERENCE.md" />
+    <None Include="READY-TO-DEPLOY.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="entrysafe-backend\requirements.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,71 @@
+# Visual Studio
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+*.vcxproj.user
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Node modules (Frontend)
+entrysafe-frontend/node_modules/
+entrysafe-frontend/dist/
+entrysafe-frontend/.env
+entrysafe-frontend/.env.local
+entrysafe-frontend/.env.production
+entrysafe-frontend/npm-debug.log*
+entrysafe-frontend/yarn-debug.log*
+entrysafe-frontend/yarn-error.log*
+
+# Python (Backend)
+entrysafe-backend/__pycache__/
+entrysafe-backend/*.py[cod]
+entrysafe-backend/venv/
+entrysafe-backend/env/
+entrysafe-backend/.env
+entrysafe-backend/.env.local
+entrysafe-backend/firebase-admin.json
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+~$*
+
+# Package files
+*.zip
+*.tar.gz
+*.rar
