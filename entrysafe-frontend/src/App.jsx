@@ -36,14 +36,10 @@ function App() {
           <Route path="/entry-safe-pricing" element={<EntrySafePricing />} />
           <Route path="/apps" element={<Apps />} />
 
-          {/* Protected Routes (Any Authenticated User) */}
+          {/* Home Route - Public for all visitors */}
           <Route 
             path="/" 
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            } 
+            element={<Home />} 
           />
 
           {/* Admin-Only Routes */}
