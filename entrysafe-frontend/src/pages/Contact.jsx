@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { submitContactForm } from '../services/api';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
@@ -10,8 +9,7 @@ function Contact() {
     phone: '',
     message: ''
   });
-  const [status, setStatus] = useState(''); // 'idle', 'loading', 'success', 'error'
-  const [errorMessage, setErrorMessage] = useState('');
+  const [status, setStatus] = useState('idle'); // 'idle', 'loading', 'success', 'error'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,26 +22,29 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('loading');
-    setErrorMessage('');
 
     try {
-      const response = await submitContactForm(formData);
-      console.log('✅ Contact form submitted:', response);
-      
-      setStatus('success');
-      
-      // Reset form after 2 seconds
-      setTimeout(() => {
-        setFormData({ name: '', email: '', phone: '', message: '' });
-        setStatus('idle');
-      }, 2000);
+      const response = await fetch('https://formspree.io/f/mreadeeo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setFormData({ name: '', email: '', phone: '', message: '' });
+          setStatus('idle');
+        }, 3000);
+      } else {
+        setStatus('error');
+      }
     } catch (error) {
-      console.error('❌ Error submitting contact form:', error);
+      console.error('Error submitting form:', error);
       setStatus('error');
-      setErrorMessage(
-        error.response?.data?.detail || 
-        'Failed to submit contact form. Please try again.'
-      );
     }
   };
 
@@ -174,8 +175,8 @@ function Contact() {
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
               <div>
-                <p className="font-semibold">Error!</p>
-                <p className="text-sm">{errorMessage}</p>
+                <p className="font-semibold">Error sending message</p>
+                <p className="text-sm">Please try again or contact us directly via email.</p>
               </div>
             </div>
           )}
