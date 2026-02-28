@@ -314,20 +314,20 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <div className="text-4xl font-bold text-navy mb-2">500+</div>
-              <div className="text-gray-600">Businesses Registered</div>
+              <div className="text-4xl font-bold text-navy mb-2">100+</div>
+              <div className="text-gray-600">Businesses Served</div>
             </div>
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <div className="text-4xl font-bold text-gold mb-2">1,000+</div>
-              <div className="text-gray-600">Tax Returns Filed</div>
+              <div className="text-4xl font-bold text-gold mb-2">Expert</div>
+              <div className="text-gray-600">Tax Advice</div>
             </div>
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <div className="text-4xl font-bold text-navy mb-2">4</div>
-              <div className="text-gray-600">Powerful Apps</div>
+              <div className="text-4xl font-bold text-navy mb-2">4 Apps</div>
+              <div className="text-gray-600">Launching Soon</div>
             </div>
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <div className="text-4xl font-bold text-gold mb-2">24/7</div>
-              <div className="text-gray-600">Support Available</div>
+              <div className="text-4xl font-bold text-gold mb-2">Mon-Fri</div>
+              <div className="text-gray-600">9AM - 5PM Support</div>
             </div>
           </div>
         </div>
