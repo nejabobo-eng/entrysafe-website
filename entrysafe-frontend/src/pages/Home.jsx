@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { Shield, FileText, Calculator, TrendingUp, Users, CheckCircle, ArrowRight, Smartphone, Monitor, Cloud, Lock, Zap, Award } from "lucide-react"
+import { Shield, FileText, Calculator, TrendingUp, Users, CheckCircle, ArrowRight, Smartphone, Monitor, Cloud, Lock, Zap, Award, BarChart3, FolderOpen, DollarSign, HardDrive, Phone } from "lucide-react"
 
 export default function Home() {
   return (
@@ -229,56 +229,72 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* App 1 */}
-            <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">≡ƒô▒</div>
-              <h3 className="text-2xl font-bold mb-3">Entry Safe Accounting</h3>
-              <p className="text-gray-300 mb-6">
-                Complete accounting system with income tracking, invoicing, financial reports, and SARS compliance
-              </p>
-              <div className="flex gap-3">
-                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
-                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+            <Link to="/entry-safe" className="group">
+              <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 cursor-pointer">
+                <div className="flex items-center justify-center w-16 h-16 bg-gold rounded-xl mb-4">
+                  <BarChart3 className="text-navy" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 group-hover:text-gold transition-colors">Entry Safe Accounting</h3>
+                <p className="text-gray-300 mb-6">
+                  Complete accounting system with income tracking, invoicing, financial reports, and SARS compliance
+                </p>
+                <div className="flex gap-3">
+                  <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                  <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* App 2 */}
-            <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">≡ƒôä</div>
-              <h3 className="text-2xl font-bold mb-3">Entry Safe Docs</h3>
-              <p className="text-navy-dark mb-6">
-                Smart document management with AI-powered categorization, OCR scanning, and secure cloud storage
-              </p>
-              <div className="flex gap-3">
-                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
-                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+            <Link to="/entry-safe-docs" className="group">
+              <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 cursor-pointer">
+                <div className="flex items-center justify-center w-16 h-16 bg-navy rounded-xl mb-4">
+                  <FolderOpen className="text-gold" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 group-hover:text-navy-dark transition-colors">Entry Safe Docs</h3>
+                <p className="text-navy-dark mb-6">
+                  Smart document management with AI-powered categorization, OCR scanning, and secure cloud storage
+                </p>
+                <div className="flex gap-3">
+                  <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                  <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* App 3 */}
-            <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">≡ƒÆ░</div>
-              <h3 className="text-2xl font-bold mb-3">Entry Safe Pricing</h3>
-              <p className="text-navy-dark mb-6">
-                Intelligent pricing engine with quote generation, profit analysis, and competitive insights
-              </p>
-              <div className="flex gap-3">
-                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
-                <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+            <Link to="/entry-safe-pricing" className="group">
+              <div className="bg-gradient-to-br from-gold to-gold-dark text-navy rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 cursor-pointer">
+                <div className="flex items-center justify-center w-16 h-16 bg-navy rounded-xl mb-4">
+                  <DollarSign className="text-gold" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 group-hover:text-navy-dark transition-colors">Entry Safe Pricing</h3>
+                <p className="text-navy-dark mb-6">
+                  Intelligent pricing engine with quote generation, profit analysis, and competitive insights
+                </p>
+                <div className="flex gap-3">
+                  <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                  <span className="bg-navy text-white px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+                </div>
               </div>
-            </div>
+            </Link>
 
             {/* App 4 */}
-            <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl">
-              <div className="text-5xl mb-4">≡ƒÆ╛</div>
-              <h3 className="text-2xl font-bold mb-3">SD Storage Helper</h3>
-              <p className="text-gray-300 mb-6">
-                Advanced storage management with duplicate detection, AI organization, and space optimization
-              </p>
-              <div className="flex gap-3">
-                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
-                <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+            <Link to="/apps" className="group">
+              <div className="bg-gradient-to-br from-navy to-navy-dark text-white rounded-xl p-8 shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 cursor-pointer">
+                <div className="flex items-center justify-center w-16 h-16 bg-gold rounded-xl mb-4">
+                  <HardDrive className="text-navy" size={32} />
+                </div>
+                <h3 className="text-2xl font-bold mb-3 group-hover:text-gold transition-colors">SD Storage Helper</h3>
+                <p className="text-gray-300 mb-6">
+                  Advanced storage management with duplicate detection, AI organization, and space optimization
+                </p>
+                <div className="flex gap-3">
+                  <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Android</span>
+                  <span className="bg-gold text-navy px-3 py-1 rounded-full text-sm font-semibold">Windows</span>
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
 
           <div className="text-center mt-12">
@@ -338,7 +354,8 @@ export default function Home() {
               href="tel:+27622475462"
               className="inline-flex items-center bg-white text-navy font-bold px-8 py-4 rounded-lg hover:bg-gray-100 transition-all shadow-lg"
             >
-              ≡ƒô₧ Call: 062 247 5462
+              <Phone className="mr-2" size={20} />
+              Call: 062 247 5462
             </a>
           </div>
         </div>
