@@ -7,6 +7,12 @@ class UserRole(str, Enum):
     ADMIN = "admin"
     CLIENT = "client"
 
+class SubscriptionTier(str, Enum):
+    FREE = "free"
+    STARTER = "starter"
+    PREMIUM = "premium"
+    ANNUAL = "annual"
+
 class UserBase(BaseModel):
     email: EmailStr
     role: UserRole = UserRole.CLIENT
@@ -20,6 +26,11 @@ class UserInDB(UserBase):
     createdAt: datetime
     emailVerified: bool
     lastLogin: Optional[datetime] = None
+    subscriptionTier: SubscriptionTier = SubscriptionTier.FREE
+    subscriptionStatus: str = "active"  # active, cancelled, expired
+    subscriptionStartDate: Optional[datetime] = None
+    subscriptionEndDate: Optional[datetime] = None
+    registeredDevices: List[str] = []
 
 class UserResponse(BaseModel):
     uid: str
@@ -28,6 +39,8 @@ class UserResponse(BaseModel):
     emailVerified: bool
     createdAt: datetime
     lastLogin: Optional[datetime] = None
+    subscriptionTier: SubscriptionTier = SubscriptionTier.FREE
+    subscriptionStatus: str = "active"
 
 class DocumentBase(BaseModel):
     filename: str

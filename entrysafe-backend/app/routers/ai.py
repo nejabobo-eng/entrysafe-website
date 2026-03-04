@@ -1,9 +1,15 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 import os
 from openai import OpenAI
+from app.auth import get_current_user
+from app.services.usage_service import UsageService
+from app.middleware.tier_check import check_ai_limit
 
 router = APIRouter(prefix="/api/ai", tags=["AI Services"])
+
+# Initialize usage service
+usage_service = UsageService()
 
 class AIRequest(BaseModel):
     prompt: str
@@ -53,41 +59,67 @@ async def generate_ai_response(prompt: str, app_type: str, max_tokens: int = 500
         raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
 
 @router.post("/accounting", response_model=AIResponse)
-async def accounting_ai(request: AIRequest):
+async def accounting_ai(request: AIRequest, current_user: dict = Depends(get_current_user)):
     """
     AI endpoint for Entry Safe Accounting app
-    
+
     Use cases:
     - Financial analysis and insights
     - Invoice generation suggestions
     - Expense categorization
     - Tax calculation assistance
+
+    ⚠️ Tier limits enforced before processing
     """
+    # Get user tier from database
+    user_tier = await usage_service.get_user_tier(current_user["uid"])
+
+    # Check if user has AI queries remaining
+    await check_ai_limit(current_user["uid"], user_tier, usage_service)
+
+    # Process AI request
     result = await generate_ai_response(
         prompt=request.prompt,
         app_type="accounting",
         max_tokens=request.max_tokens,
         temperature=request.temperature
     )
+
+    # Increment usage counter
+    await usage_service.increment_ai_usage(current_user["uid"])
+
     return result
 
 @router.post("/docs", response_model=AIResponse)
-async def docs_ai(request: AIRequest):
+async def docs_ai(request: AIRequest, current_user: dict = Depends(get_current_user)):
     """
     AI endpoint for Entry Safe Docs app
-    
+
     Use cases:
     - Document summarization
     - OCR text extraction suggestions
     - Document categorization
     - Metadata generation
+
+    ⚠️ Tier limits enforced before processing
     """
+    # Get user tier from database
+    user_tier = await usage_service.get_user_tier(current_user["uid"])
+
+    # Check if user has AI queries remaining
+    await check_ai_limit(current_user["uid"], user_tier, usage_service)
+
+    # Process AI request
     result = await generate_ai_response(
         prompt=request.prompt,
         app_type="docs",
         max_tokens=request.max_tokens,
         temperature=request.temperature
     )
+
+    # Increment usage counter
+    await usage_service.increment_ai_usage(current_user["uid"])
+
     return result
 
 @router.post("/pricing", response_model=AIResponse)
