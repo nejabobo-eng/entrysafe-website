@@ -43,6 +43,7 @@ app.include_router(documents.router)
 app.include_router(admin.router)
 app.include_router(contact.router)
 app.include_router(ai.router)
+app.include_router(payments.router)
 
 @app.get("/")
 async def root():
