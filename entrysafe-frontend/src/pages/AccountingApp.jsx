@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 
-export default function EntrySafe() {
+export default function AccountingApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navbar />
@@ -10,7 +10,7 @@ export default function EntrySafe() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-navy mb-6">
-            📱 Entry Safe - Accounting System
+            📱 Entry Safe - Accounting App
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Your complete accounting solution for Android and Windows. Manage your finances, track expenses, and grow your business with confidence.
@@ -20,11 +20,18 @@ export default function EntrySafe() {
         {/* Platform Badges */}
         <div className="flex justify-center gap-4 mb-12">
           <span className="bg-navy text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-            📱 Android App
+            📱 Coming to Google Play Store
           </span>
           <span className="bg-navy text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-            💻 Windows App
+            💻 Coming to Microsoft Store
           </span>
+        </div>
+
+        {/* Availability Notice */}
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-12 text-center">
+          <p className="text-lg text-blue-800 font-semibold">
+            🚀 The Entry Safe Accounting App will be made available on Google Play Store and Microsoft Store when ready.
+          </p>
         </div>
 
         {/* Key Features */}
@@ -58,6 +65,18 @@ export default function EntrySafe() {
             </div>
 
             <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">🤖</div>
+              <h3 className="text-xl font-bold mb-2">AI-Powered Assistance</h3>
+              <p className="text-gray-200">Smart automation for bookkeeping and compliance</p>
+            </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">☁️</div>
+              <h3 className="text-xl font-bold mb-2">Cloud Storage</h3>
+              <p className="text-gray-200">Secure cloud backup with tier-based storage limits</p>
+            </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
               <div className="text-4xl mb-3">🔄</div>
               <h3 className="text-xl font-bold mb-2">Multi-Platform Sync</h3>
               <p className="text-gray-200">Access your data seamlessly across Android and Windows</p>
@@ -68,13 +87,19 @@ export default function EntrySafe() {
               <h3 className="text-xl font-bold mb-2">Bank-Level Security</h3>
               <p className="text-gray-200">Your financial data is encrypted and protected</p>
             </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">📱</div>
+              <h3 className="text-xl font-bold mb-2">Multi-Device Support</h3>
+              <p className="text-gray-200">Premium users can sync across unlimited devices</p>
+            </div>
           </div>
         </div>
 
         {/* Why Entry Safe */}
         <div className="bg-gradient-to-r from-navy via-navy-light to-navy rounded-2xl shadow-xl p-8 mb-12 text-white">
           <h2 className="text-3xl font-bold mb-6 text-center">
-            🚀 Why Choose Entry Safe?
+            🚀 Why Choose Entry Safe Accounting?
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
@@ -98,34 +123,26 @@ export default function EntrySafe() {
             <div>
               <h3 className="text-xl font-bold mb-3 text-gold">✅ Expert Support</h3>
               <p className="text-gray-200">
-                Our team is here to help you succeed. Get support when you need it.
+                Get help from MLU Accounting professionals when you need it.
               </p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-white rounded-2xl shadow-xl p-12">
+        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
           <h2 className="text-3xl font-bold text-navy mb-4">
-            Ready to Transform Your Accounting?
+            Ready to Transform Your Business Accounting?
           </h2>
           <p className="text-xl text-gray-700 mb-8">
-            Start your free trial today. No credit card required.
+            Join hundreds of South African businesses managing their finances smarter.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/register"
-              className="bg-gradient-to-r from-navy to-navy-light text-white px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105"
-            >
-              🚀 Get Started Free
-            </a>
-            <a
-              href="/entry-safe-pricing"
-              className="bg-gold text-navy px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105"
-            >
-              💰 View Pricing
-            </a>
-          </div>
+          <a 
+            href="/apps" 
+            className="inline-block bg-gold hover:bg-gold-dark text-navy font-bold py-4 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
+          >
+            View Subscription Plans →
+          </a>
         </div>
       </div>
 

@@ -11,9 +11,9 @@ import Services from "./pages/Services"
 import About from "./pages/About"
 import KnowledgeHub from "./pages/KnowledgeHub"
 import LiveFeeds from "./pages/LiveFeeds"
-import EntrySafe from "./pages/EntrySafe"
-import EntrySafeDocs from "./pages/EntrySafeDocs"
-import EntrySafePricing from "./pages/EntrySafePricing"
+import AccountingApp from "./pages/AccountingApp"
+import DocsApp from "./pages/DocsApp"
+import PricingApp from "./pages/PricingApp"
 import Apps from "./pages/Apps"
 import Testimonials from "./pages/Testimonials"
 import ProtectedRoute from "./components/ProtectedRoute"
@@ -33,9 +33,14 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/knowledge-hub" element={<KnowledgeHub />} />
           <Route path="/live-feeds" element={<LiveFeeds />} />
-          <Route path="/entry-safe" element={<EntrySafe />} />
-          <Route path="/entry-safe-docs" element={<EntrySafeDocs />} />
-          <Route path="/entry-safe-pricing" element={<EntrySafePricing />} />
+          <Route path="/accounting-app" element={<AccountingApp />} />
+          <Route path="/docs-app" element={<DocsApp />} />
+          <Route path="/pricing-app" element={<PricingApp />} />
+
+          {/* Legacy redirects - maintain old URLs for backwards compatibility */}
+          <Route path="/entry-safe" element={<AccountingApp />} />
+          <Route path="/entry-safe-docs" element={<DocsApp />} />
+          <Route path="/entry-safe-pricing" element={<PricingApp />} />
           <Route path="/apps" element={<Apps />} />
           <Route path="/testimonials" element={<Testimonials />} />
 

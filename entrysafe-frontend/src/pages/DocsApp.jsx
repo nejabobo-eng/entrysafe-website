@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 
-export default function EntrySafeDocs() {
+export default function DocsApp() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <Navbar />
@@ -10,7 +10,7 @@ export default function EntrySafeDocs() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-navy mb-6">
-            📄 Entry Safe Docs - Document Management
+            📄 Entry Safe Docs - Document Management App
           </h1>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
             Store, organize, and manage all your business documents securely in one place. Access from anywhere, anytime.
@@ -20,14 +20,21 @@ export default function EntrySafeDocs() {
         {/* Platform Badges */}
         <div className="flex justify-center gap-4 mb-12">
           <span className="bg-navy text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-            📱 Android App
+            📱 Coming to Google Play Store
           </span>
           <span className="bg-navy text-white px-6 py-3 rounded-full font-semibold shadow-lg">
-            💻 Windows App
+            💻 Coming to Microsoft Store
           </span>
           <span className="bg-gold text-navy px-6 py-3 rounded-full font-semibold shadow-lg">
-            🌐 Web Access
+            🌐 Web Access Available
           </span>
+        </div>
+
+        {/* Availability Notice */}
+        <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-12 text-center">
+          <p className="text-lg text-blue-800 font-semibold">
+            🚀 The Entry Safe Docs App will be made available on Google Play Store and Microsoft Store when ready.
+          </p>
         </div>
 
         {/* Key Features */}
@@ -51,7 +58,7 @@ export default function EntrySafeDocs() {
             <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
               <div className="text-4xl mb-3">☁️</div>
               <h3 className="text-xl font-bold mb-2">Cloud Storage</h3>
-              <p className="text-gray-200">Secure cloud backup - never lose an important document</p>
+              <p className="text-gray-200">Secure cloud backup with tier-based storage limits</p>
             </div>
 
             <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
@@ -67,9 +74,27 @@ export default function EntrySafeDocs() {
             </div>
 
             <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">🤖</div>
+              <h3 className="text-xl font-bold mb-2">AI Organization</h3>
+              <p className="text-gray-200">Smart categorization and tagging powered by AI</p>
+            </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
               <div className="text-4xl mb-3">🔐</div>
               <h3 className="text-xl font-bold mb-2">Secure Access</h3>
               <p className="text-gray-200">Role-based permissions and encryption for sensitive files</p>
+            </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">🔄</div>
+              <h3 className="text-xl font-bold mb-2">Multi-Device Sync</h3>
+              <p className="text-gray-200">Access your documents from Android, Windows, or Web</p>
+            </div>
+
+            <div className="p-6 bg-gradient-to-br from-navy to-navy-light rounded-xl text-white">
+              <div className="text-4xl mb-3">📊</div>
+              <h3 className="text-xl font-bold mb-2">Version Control</h3>
+              <p className="text-gray-200">Track document revisions and restore previous versions</p>
             </div>
           </div>
         </div>
@@ -101,75 +126,67 @@ export default function EntrySafeDocs() {
               <p className="font-semibold text-navy">Tax Documents</p>
             </div>
             <div className="p-4 bg-gray-100 rounded-lg text-center">
-              <div className="text-3xl mb-2">✅</div>
-              <p className="font-semibold text-navy">Compliance Forms</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg text-center">
-              <div className="text-3xl mb-2">📝</div>
-              <p className="font-semibold text-navy">Reports</p>
-            </div>
-            <div className="p-4 bg-gray-100 rounded-lg text-center">
-              <div className="text-3xl mb-2">📎</div>
+              <div className="text-4xl mb-2">📝</div>
               <p className="font-semibold text-navy">Receipts</p>
+            </div>
+            <div className="p-4 bg-gray-100 rounded-lg text-center">
+              <div className="text-3xl mb-2">💼</div>
+              <p className="font-semibold text-navy">Business Records</p>
+            </div>
+            <div className="p-4 bg-gray-100 rounded-lg text-center">
+              <div className="text-3xl mb-2">📁</div>
+              <p className="font-semibold text-navy">And More...</p>
             </div>
           </div>
         </div>
 
-        {/* Benefits */}
+        {/* Why Entry Safe Docs */}
         <div className="bg-gradient-to-r from-navy via-navy-light to-navy rounded-2xl shadow-xl p-8 mb-12 text-white">
           <h2 className="text-3xl font-bold mb-6 text-center">
-            💎 Benefits of Entry Safe Docs
+            🚀 Why Choose Entry Safe Docs?
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-3 text-gold">✅ Save Time</h3>
+              <h3 className="text-xl font-bold mb-3 text-gold">✅ Compliance Ready</h3>
               <p className="text-gray-200">
-                No more digging through filing cabinets. Find what you need in seconds.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3 text-gold">✅ Stay Organized</h3>
-              <p className="text-gray-200">
-                Keep all business documents in one centralized, organized system.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3 text-gold">✅ SARS Ready</h3>
-              <p className="text-gray-200">
-                Keep audit-ready records with automatic organization and timestamping.
+                Keep your documents organized for SARS audits and tax submissions.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3 text-gold">✅ Access Anywhere</h3>
               <p className="text-gray-200">
-                Work from office, home, or on the go with multi-platform access.
+                Work from office, home, or on-the-go with multi-platform access.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3 text-gold">✅ Secure & Private</h3>
+              <p className="text-gray-200">
+                Bank-level encryption ensures your sensitive documents stay safe.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3 text-gold">✅ Save Time</h3>
+              <p className="text-gray-200">
+                No more digging through folders - find what you need instantly.
               </p>
             </div>
           </div>
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-white rounded-2xl shadow-xl p-12">
+        <div className="bg-white rounded-2xl shadow-xl p-12 text-center">
           <h2 className="text-3xl font-bold text-navy mb-4">
             Ready to Go Paperless?
           </h2>
           <p className="text-xl text-gray-700 mb-8">
-            Join hundreds of businesses managing documents the smart way.
+            Join businesses simplifying their document management with Entry Safe Docs.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/register"
-              className="bg-gradient-to-r from-navy to-navy-light text-white px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105"
-            >
-              🚀 Start Free Trial
-            </a>
-            <a
-              href="/entry-safe-pricing"
-              className="bg-gold text-navy px-8 py-4 rounded-lg font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105"
-            >
-              💰 View Pricing
-            </a>
-          </div>
+          <a 
+            href="/apps" 
+            className="inline-block bg-gold hover:bg-gold-dark text-navy font-bold py-4 px-8 rounded-full text-lg shadow-lg transition-all hover:scale-105"
+          >
+            View Subscription Plans →
+          </a>
         </div>
       </div>
 

@@ -40,16 +40,16 @@ export default function Navbar() {
               📱 Apps
             </Link>
 
-            <Link to="/entry-safe" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
-              🔐 Entry Safe
+            <Link to="/accounting-app" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
+              💰 Accounting App
             </Link>
 
-            <Link to="/entry-safe-docs" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
-              📄 Docs
+            <Link to="/docs-app" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
+              📄 Docs App
             </Link>
 
-            <Link to="/entry-safe-pricing" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
-              💰 Pricing
+            <Link to="/pricing-app" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
+              💎 Pricing App
             </Link>
 
             <Link to="/services" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
@@ -143,16 +143,16 @@ export default function Navbar() {
               📱 Apps
             </Link>
 
-            <Link to="/entry-safe" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
-              🔐 Entry Safe
+            <Link to="/accounting-app" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
+              💰 Accounting App
             </Link>
 
-            <Link to="/entry-safe-docs" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
-              📄 Docs
+            <Link to="/docs-app" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
+              📄 Docs App
             </Link>
 
-            <Link to="/entry-safe-pricing" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
-              💰 Pricing
+            <Link to="/pricing-app" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
+              💎 Pricing App
             </Link>
 
             <Link to="/services" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
