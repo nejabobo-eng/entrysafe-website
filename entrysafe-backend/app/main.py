@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routers import users, documents, admin, contact
+from app.routers import users, documents, admin, contact, ai, payments
 
 load_dotenv()
 
