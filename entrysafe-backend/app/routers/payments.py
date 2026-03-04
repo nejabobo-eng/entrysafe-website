@@ -8,8 +8,9 @@ from fastapi import APIRouter, HTTPException, Request, Depends, status
 from pydantic import BaseModel
 from typing import Optional
 import paypalrestsdk
+import httpx
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import hmac
 import hashlib
 import json
@@ -25,6 +26,7 @@ PAYPAL_MODE = os.getenv("PAYPAL_MODE", "sandbox")  # sandbox or live
 PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
 PAYPAL_CLIENT_SECRET = os.getenv("PAYPAL_CLIENT_SECRET")
 PAYPAL_WEBHOOK_ID = os.getenv("PAYPAL_WEBHOOK_ID")  # For webhook verification
+PAYPAL_API_BASE = os.getenv("PAYPAL_API_BASE", "https://api-m.sandbox.paypal.com")
 
 # Configure PayPal SDK
 paypalrestsdk.configure({
@@ -32,6 +34,131 @@ paypalrestsdk.configure({
     "client_id": PAYPAL_CLIENT_ID,
     "client_secret": PAYPAL_CLIENT_SECRET
 })
+
+
+# ============================================================================
+# SECURITY FUNCTIONS - Production-Grade Webhook Verification
+# ============================================================================
+
+async def get_paypal_access_token() -> str:
+    """
+    Get PayPal OAuth2 access token for server-to-server API calls.
+    Used for webhook signature verification.
+    """
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{PAYPAL_API_BASE}/v1/oauth2/token",
+            auth=(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET),
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            data={"grant_type": "client_credentials"},
+        )
+        response.raise_for_status()
+        return response.json()["access_token"]
+
+
+async def verify_paypal_webhook(request: Request, body: dict) -> bool:
+    """
+    Verify PayPal webhook signature using official PayPal verification endpoint.
+
+    This is the PRODUCTION-SAFE method recommended by PayPal.
+    Do NOT manually verify certificates or reconstruct signatures.
+
+    Returns True if signature valid, raises HTTPException if invalid.
+    """
+    if not PAYPAL_WEBHOOK_ID:
+        print("⚠️ WARNING: PAYPAL_WEBHOOK_ID not configured. Skipping signature verification.")
+        print("   This is INSECURE for production. Set PAYPAL_WEBHOOK_ID in .env")
+        return True  # Allow in development, but log warning
+
+    # Get access token
+    access_token = await get_paypal_access_token()
+
+    # Prepare verification payload
+    verification_payload = {
+        "auth_algo": request.headers.get("paypal-auth-algo"),
+        "cert_url": request.headers.get("paypal-cert-url"),
+        "transmission_id": request.headers.get("paypal-transmission-id"),
+        "transmission_sig": request.headers.get("paypal-transmission-sig"),
+        "transmission_time": request.headers.get("paypal-transmission-time"),
+        "webhook_id": PAYPAL_WEBHOOK_ID,
+        "webhook_event": body,
+    }
+
+    # Call PayPal's official verification endpoint
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{PAYPAL_API_BASE}/v1/notifications/verify-webhook-signature",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {access_token}",
+            },
+            json=verification_payload,
+        )
+
+    if response.status_code != 200:
+        raise HTTPException(
+            status_code=400,
+            detail=f"PayPal signature verification failed: {response.text}"
+        )
+
+    verification_status = response.json().get("verification_status")
+
+    if verification_status != "SUCCESS":
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid PayPal webhook signature"
+        )
+
+    return True
+
+
+async def is_duplicate_event(db, event_id: str) -> bool:
+    """
+    Replay protection: Check if webhook event already processed.
+
+    Prevents duplicate processing if PayPal resends webhook.
+    Stores event_id in webhook_events collection.
+    """
+    existing = await db.webhook_events.find_one({"event_id": event_id})
+    if existing:
+        print(f"⚠️ Duplicate webhook event ignored: {event_id}")
+        return True
+
+    # Mark as processed (will be updated with full details later)
+    await db.webhook_events.insert_one({
+        "event_id": event_id,
+        "processed_at": datetime.utcnow(),
+        "status": "processing"
+    })
+    return False
+
+
+def validate_webhook_timestamp(request: Request):
+    """
+    Timestamp validation: Reject webhooks older than 5 minutes.
+
+    Prevents replay attacks using old captured webhooks.
+    """
+    transmission_time = request.headers.get("paypal-transmission-time")
+    if not transmission_time:
+        raise HTTPException(status_code=400, detail="Missing transmission time")
+
+    try:
+        event_time = datetime.fromisoformat(transmission_time.replace("Z", "+00:00"))
+        age_seconds = abs((datetime.now(timezone.utc) - event_time).total_seconds())
+
+        if age_seconds > 300:  # 5 minutes
+            raise HTTPException(
+                status_code=400,
+                detail=f"Stale webhook rejected (age: {age_seconds}s)"
+            )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid transmission time format")
+
+
+# ============================================================================
+# SUBSCRIPTION ENDPOINTS
+# ============================================================================
 
 # Pricing Configuration (matches website)
 SUBSCRIPTION_PLANS = {
@@ -215,7 +342,10 @@ async def create_subscription(
 async def execute_agreement(token: str, current_user: dict = Depends(get_current_user)):
     """
     Execute billing agreement after user approves on PayPal.
-    
+
+    ⚠️ SECURITY: Does NOT activate tier immediately.
+    Tier activation happens ONLY after webhook confirms payment.
+
     Called after user returns from PayPal approval.
     """
     try:
@@ -225,46 +355,55 @@ async def execute_agreement(token: str, current_user: dict = Depends(get_current
             "user_uid": current_user["uid"],
             "billing_agreement_token": token
         })
-        
+
         if not pending_sub:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Pending subscription not found"
             )
-        
+
         # Execute the agreement
         billing_agreement = paypalrestsdk.BillingAgreement.find(token)
-        
+
         if not billing_agreement.execute():
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Agreement execution failed: {billing_agreement.error}"
             )
-        
-        # Update user subscription in database
+
+        # ⚠️ CRITICAL: Mark as pending_confirmation, NOT active
+        # Tier will be activated by webhook after payment confirmed
         await db.users.update_one(
             {"uid": current_user["uid"]},
             {
                 "$set": {
-                    "subscription_tier": pending_sub["tier"],
-                    "subscription_status": "active",
+                    "subscription_status": "pending_confirmation",
                     "subscription_id": billing_agreement.id,
+                    "pending_tier": pending_sub["tier"],
                     "subscription_start_date": datetime.now(),
                     "updated_at": datetime.now()
                 }
             }
         )
-        
-        # Remove pending subscription
-        await db.pending_subscriptions.delete_one({"_id": pending_sub["_id"]})
-        
+
+        # Keep pending subscription (remove only after webhook confirms)
+        await db.pending_subscriptions.update_one(
+            {"_id": pending_sub["_id"]},
+            {
+                "$set": {
+                    "status": "awaiting_webhook",
+                    "subscription_id": billing_agreement.id,
+                    "updated_at": datetime.now()
+                }
+            }
+        )
+
         return {
-            "message": "Subscription activated successfully",
+            "message": "Payment submitted. Awaiting confirmation...",
             "subscription_id": billing_agreement.id,
-            "tier": pending_sub["tier"],
-            "status": "active"
+            "status": "pending_confirmation"
         }
-        
+
     except paypalrestsdk.ResourceNotFound as e:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -280,67 +419,127 @@ async def execute_agreement(token: str, current_user: dict = Depends(get_current
 @router.post("/webhook")
 async def paypal_webhook(request: Request):
     """
-    Handle PayPal webhook events.
-    
+    Handle PayPal webhook events with production-grade security.
+
+    🔐 SECURITY STACK:
+    - ✅ Cryptographic signature verification (PayPal official endpoint)
+    - ✅ Replay protection (event_id stored)
+    - ✅ Timestamp validation (reject webhooks > 5 minutes old)
+    - ✅ State transition validation (only activate if pending_confirmation)
+    - ✅ Subscription ID matching
+    - ✅ Fraud logging
+
+    🎯 CRITICAL: This is the ONLY place tier activation happens.
+
     Events handled:
-    - BILLING.SUBSCRIPTION.CREATED
-    - BILLING.SUBSCRIPTION.ACTIVATED
-    - BILLING.SUBSCRIPTION.CANCELLED
-    - BILLING.SUBSCRIPTION.SUSPENDED
-    - BILLING.SUBSCRIPTION.EXPIRED
-    - PAYMENT.SALE.COMPLETED
+    - BILLING.SUBSCRIPTION.ACTIVATED ✅ Activates tier
+    - BILLING.SUBSCRIPTION.CANCELLED ❌ Downgrades to free
+    - BILLING.SUBSCRIPTION.SUSPENDED ⏸️ Suspends access
+    - BILLING.SUBSCRIPTION.EXPIRED 🔚 Downgrades to free
+    - PAYMENT.SALE.COMPLETED 💰 Logs payment
+    - PAYMENT.SALE.DENIED ❌ Logs failure
     """
     try:
-        # Get webhook body
-        body = await request.body()
-        headers = request.headers
-        
-        # Verify webhook signature (CRITICAL for security)
-        if PAYPAL_WEBHOOK_ID:
-            # PayPal webhook verification
-            # Note: paypalrestsdk doesn't have built-in webhook verification
-            # You may need to implement this manually or use PayPal's webhook simulator
-            pass
-        
-        # Parse event
-        event = await request.json()
-        event_type = event.get("event_type")
-        resource = event.get("resource", {})
-        
+        # Parse event body
+        body = await request.json()
+        event_id = body.get("id")
+        event_type = body.get("event_type")
+        resource = body.get("resource", {})
+        subscription_id = resource.get("id")
+
         db = get_database()
-        
-        # Log webhook event
-        await db.webhook_events.insert_one({
-            "event_type": event_type,
-            "resource_id": resource.get("id"),
-            "resource": resource,
-            "received_at": datetime.now(),
-            "processed": False
-        })
-        
-        # Handle different event types
+
+        # ============================================================================
+        # SECURITY LAYER 1: Timestamp Validation
+        # ============================================================================
+        validate_webhook_timestamp(request)
+
+        # ============================================================================
+        # SECURITY LAYER 2: Cryptographic Signature Verification
+        # ============================================================================
+        await verify_paypal_webhook(request, body)
+
+        # ============================================================================
+        # SECURITY LAYER 3: Replay Protection
+        # ============================================================================
+        if await is_duplicate_event(db, event_id):
+            return {"status": "duplicate_ignored", "event_id": event_id}
+
+        # ============================================================================
+        # SECURITY LAYER 4: Subscription ID Matching
+        # ============================================================================
+        user = await db.users.find_one({"subscription_id": subscription_id})
+
+        if not user and event_type.startswith("BILLING.SUBSCRIPTION"):
+            # Possible fraud attempt - log for investigation
+            await db.security_logs.insert_one({
+                "type": "unknown_subscription_webhook",
+                "event_type": event_type,
+                "subscription_id": subscription_id,
+                "event_id": event_id,
+                "resource": resource,
+                "headers": dict(request.headers),
+                "timestamp": datetime.utcnow()
+            })
+            print(f"🚨 SECURITY: Unknown subscription webhook: {subscription_id}")
+            raise HTTPException(
+                status_code=400,
+                detail="Unknown subscription"
+            )
+
+        # ============================================================================
+        # EVENT HANDLING - Production-Grade State Transitions
+        # ============================================================================
+
         if event_type == "BILLING.SUBSCRIPTION.ACTIVATED":
-            subscription_id = resource.get("id")
-            
-            # Find user by subscription ID
-            user = await db.users.find_one({"subscription_id": subscription_id})
-            
-            if user:
-                await db.users.update_one(
-                    {"uid": user["uid"]},
-                    {
-                        "$set": {
-                            "subscription_status": "active",
-                            "updated_at": datetime.now()
-                        }
-                    }
+            # ============================================================================
+            # SECURITY LAYER 5: State Transition Validation
+            # ============================================================================
+            if user.get("subscription_status") != "pending_confirmation":
+                await db.security_logs.insert_one({
+                    "type": "invalid_state_transition",
+                    "event_type": event_type,
+                    "user_uid": user["uid"],
+                    "current_status": user.get("subscription_status"),
+                    "expected_status": "pending_confirmation",
+                    "timestamp": datetime.utcnow()
+                })
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Invalid state transition. Current: {user.get('subscription_status')}, Expected: pending_confirmation"
                 )
-        
+
+            # Get pending tier
+            pending_tier = user.get("pending_tier")
+
+            if not pending_tier:
+                print(f"⚠️ Webhook: No pending tier for user {user['uid']}")
+                raise HTTPException(status_code=400, detail="No pending tier")
+
+            # ✅ ACTIVATE TIER (This is the ONLY place this happens)
+            await db.users.update_one(
+                {"uid": user["uid"]},
+                {
+                    "$set": {
+                        "subscription_tier": pending_tier,
+                        "subscription_status": "active",
+                        "activated_at": datetime.utcnow(),
+                        "updated_at": datetime.utcnow()
+                    },
+                    "$unset": {
+                        "pending_tier": ""
+                    }
+                }
+            )
+
+            # Remove pending subscription record
+            await db.pending_subscriptions.delete_one({
+                "subscription_id": subscription_id
+            })
+
+            print(f"✅ Webhook: Activated {pending_tier} tier for user {user['uid']}")
+
         elif event_type == "BILLING.SUBSCRIPTION.CANCELLED":
-            subscription_id = resource.get("id")
-            
-            user = await db.users.find_one({"subscription_id": subscription_id})
-            
             if user:
                 await db.users.update_one(
                     {"uid": user["uid"]},
@@ -348,32 +547,28 @@ async def paypal_webhook(request: Request):
                         "$set": {
                             "subscription_status": "cancelled",
                             "subscription_tier": SubscriptionTier.FREE.value,
-                            "updated_at": datetime.now()
+                            "cancelled_at": datetime.utcnow(),
+                            "updated_at": datetime.utcnow()
                         }
                     }
                 )
-        
+                print(f"❌ Webhook: Cancelled subscription for user {user['uid']}")
+
         elif event_type == "BILLING.SUBSCRIPTION.SUSPENDED":
-            subscription_id = resource.get("id")
-            
-            user = await db.users.find_one({"subscription_id": subscription_id})
-            
             if user:
                 await db.users.update_one(
                     {"uid": user["uid"]},
                     {
                         "$set": {
                             "subscription_status": "suspended",
-                            "updated_at": datetime.now()
+                            "suspended_at": datetime.utcnow(),
+                            "updated_at": datetime.utcnow()
                         }
                     }
                 )
-        
+                print(f"⏸️ Webhook: Suspended subscription for user {user['uid']}")
+
         elif event_type == "BILLING.SUBSCRIPTION.EXPIRED":
-            subscription_id = resource.get("id")
-            
-            user = await db.users.find_one({"subscription_id": subscription_id})
-            
             if user:
                 await db.users.update_one(
                     {"uid": user["uid"]},
@@ -381,32 +576,82 @@ async def paypal_webhook(request: Request):
                         "$set": {
                             "subscription_status": "expired",
                             "subscription_tier": SubscriptionTier.FREE.value,
-                            "updated_at": datetime.now()
+                            "expired_at": datetime.utcnow(),
+                            "updated_at": datetime.utcnow()
                         }
                     }
                 )
-        
+                print(f"🔚 Webhook: Expired subscription for user {user['uid']}")
+
         elif event_type == "PAYMENT.SALE.COMPLETED":
             # Log successful payment
             await db.payment_history.insert_one({
+                "event_id": event_id,
                 "transaction_id": resource.get("id"),
                 "amount": resource.get("amount"),
                 "currency": resource.get("amount", {}).get("currency"),
                 "billing_agreement_id": resource.get("billing_agreement_id"),
                 "status": "completed",
-                "completed_at": datetime.now()
+                "completed_at": datetime.utcnow()
             })
-        
-        # Mark webhook as processed
+            print(f"💰 Webhook: Payment completed {resource.get('id')}")
+
+        elif event_type == "PAYMENT.SALE.DENIED":
+            # Log failed payment attempt
+            if user:
+                await db.users.update_one(
+                    {"uid": user["uid"]},
+                    {
+                        "$set": {
+                            "subscription_status": "payment_failed",
+                            "updated_at": datetime.utcnow()
+                        }
+                    }
+                )
+
+            await db.payment_history.insert_one({
+                "event_id": event_id,
+                "transaction_id": resource.get("id"),
+                "amount": resource.get("amount"),
+                "currency": resource.get("amount", {}).get("currency"),
+                "billing_agreement_id": resource.get("billing_agreement_id"),
+                "status": "denied",
+                "reason": resource.get("reason_code"),
+                "denied_at": datetime.utcnow()
+            })
+            print(f"❌ Webhook: Payment denied {resource.get('id')}")
+
+        # Mark webhook as successfully processed
         await db.webhook_events.update_one(
-            {"resource_id": resource.get("id"), "event_type": event_type},
-            {"$set": {"processed": True, "processed_at": datetime.now()}}
+            {"event_id": event_id},
+            {
+                "$set": {
+                    "processed": True,
+                    "processed_at": datetime.utcnow(),
+                    "event_type": event_type,
+                    "resource": resource
+                }
+            }
         )
-        
-        return {"status": "success", "event_type": event_type}
-        
+
+        return {
+            "status": "success",
+            "event_type": event_type,
+            "event_id": event_id
+        }
+
+    except HTTPException:
+        # Re-raise HTTP exceptions (security failures)
+        raise
     except Exception as e:
-        print(f"Webhook processing error: {str(e)}")
+        print(f"🚨 Webhook processing error: {str(e)}")
+        # Log error for investigation
+        db = get_database()
+        await db.webhook_errors.insert_one({
+            "error": str(e),
+            "event_type": body.get("event_type") if 'body' in locals() else None,
+            "timestamp": datetime.utcnow()
+        })
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Webhook processing failed: {str(e)}"
