@@ -1,12 +1,15 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import { useAuth } from "../contexts/AuthContext"
+import { createSubscription } from "../services/paymentService"
 
 export default function Apps() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [selectedPlan, setSelectedPlan] = useState("premium")
+  const [loading, setLoading] = useState(false)
 
   const apps = [
     {
