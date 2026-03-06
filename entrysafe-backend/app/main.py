@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routers import users, documents, admin, contact, ai, payments
+from app.routers import users, documents, admin, contact, ai, payments, cloud_backup
 
 load_dotenv()
 
@@ -45,6 +45,7 @@ app.include_router(admin.router)
 app.include_router(contact.router)
 app.include_router(ai.router)
 app.include_router(payments.router)
+app.include_router(cloud_backup.router)
 
 @app.get("/")
 async def root():
