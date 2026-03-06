@@ -13,8 +13,12 @@ firebase_initialized = False
 
 try:
     # Try loading from environment variable (for Render.com deployment)
-    # Check both FIREBASE_ADMIN_CREDENTIALS and FIREBASE_ADMIN_JSON for flexibility
-    firebase_creds_json = os.getenv("FIREBASE_ADMIN_CREDENTIALS") or os.getenv("FIREBASE_ADMIN_JSON")
+    # Check multiple possible environment variable names for flexibility
+    firebase_creds_json = (
+        os.getenv("FIREBASE_ADMIN_CREDENTIALS") or 
+        os.getenv("FIREBASE_SERVICE_ACCOUNT") or 
+        os.getenv("FIREBASE_ADMIN_JSON")
+    )
 
     if firebase_creds_json:
         # Parse JSON from environment variable
@@ -33,7 +37,7 @@ try:
     else:
         print(f"⚠️  Firebase credentials not found!")
         print(f"   Looking for:")
-        print(f"   - Environment variable: FIREBASE_ADMIN_CREDENTIALS or FIREBASE_ADMIN_JSON")
+        print(f"   - Environment variable: FIREBASE_ADMIN_CREDENTIALS, FIREBASE_SERVICE_ACCOUNT, or FIREBASE_ADMIN_JSON")
         print(f"   - File at: {FIREBASE_CREDENTIALS_PATH}")
         print("   Authentication will fail!")
 except ValueError as e:
