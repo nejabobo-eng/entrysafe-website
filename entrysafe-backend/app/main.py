@@ -27,12 +27,13 @@ app = FastAPI(
 )
 
 # CORS Configuration
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+# Allow all origins for mobile app compatibility (Flutter doesn't send Origin header)
+cors_origins = os.getenv("CORS_ORIGINS", "*").split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
-    allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins for mobile apps
+    allow_credentials=False,  # Must be False when allow_origins is ["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
