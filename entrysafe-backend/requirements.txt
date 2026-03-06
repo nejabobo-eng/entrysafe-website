@@ -31,3 +31,9 @@ paypalrestsdk==1.13.1
 
 # Email Validation
 email-validator==2.1.0
+
+# PDF Report Generation
+reportlab==4.2.5
+
+# AI Integration (for Emergent's accounting parser)
+# Note: If using OpenAI instead of Emergent, the openai package above is sufficient

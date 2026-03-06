@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import AdminDashboard from "./pages/AdminDashboard"
 import AdminTestimonials from "./pages/AdminTestimonials"
 import ClientPortal from "./pages/ClientPortal"
+import AccountSettings from "./pages/AccountSettings"
 import Contact from "./pages/Contact"
 import Services from "./pages/Services"
 import About from "./pages/About"
@@ -79,6 +80,14 @@ function App() {
               <ClientRoute>
                 <ClientPortal />
               </ClientRoute>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <AccountSettings />
+              </ProtectedRoute>
             } 
           />
         </Routes>

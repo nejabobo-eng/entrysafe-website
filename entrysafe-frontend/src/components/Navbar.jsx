@@ -109,12 +109,19 @@ export default function Navbar() {
                       {user?.role?.toUpperCase()}
                     </p>
                   </div>
+                  <Link
+                    to="/settings"
+                    onClick={() => setUserMenuOpen(false)}
+                    className="block px-4 py-2 text-sm text-navy hover:bg-gray-50 transition-colors font-semibold"
+                  >
+                    ⚙️ Account Settings
+                  </Link>
                   <button
                     onClick={() => {
                       setUserMenuOpen(false)
                       handleLogout()
                     }}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold"
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors font-semibold border-t border-gray-200"
                   >
                     🚪 Logout
                   </button>
