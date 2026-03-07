@@ -168,18 +168,18 @@ class UsageService:
     async def get_user_tier(self, user_uid: str) -> str:
         """
         Get user's current subscription tier from database.
-        
+
         Args:
             user_uid: Firebase user UID
-        
+
         Returns:
             str: Tier name (free/starter/premium/annual)
         """
-        db = await self._get_db()
-        
+        db = self._get_db()  # Fixed: Don't await database object
+
         user_doc = await db.users.find_one({"uid": user_uid})
-        
+
         if not user_doc:
             return "free"  # Default to free tier
-        
+
         return user_doc.get("subscription_tier", "free").lower()
