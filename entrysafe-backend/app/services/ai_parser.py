@@ -10,11 +10,12 @@ logger = logging.getLogger(__name__)
 
 class AIAccountingParser:
     """AI-powered parser for natural language accounting commands using GPT-4o"""
-    
+
     def __init__(self):
-        self.api_key = os.environ.get('OPENAI_API_KEY')
+        # Support both variable names for flexibility
+        self.api_key = os.environ.get('OPENAI_KEY_ACCOUNTING') or os.environ.get('OPENAI_API_KEY')
         if not self.api_key:
-            raise ValueError("OPENAI_API_KEY not found in environment variables")
+            raise ValueError("OPENAI_KEY_ACCOUNTING (or OPENAI_API_KEY) not found in environment variables")
     
     async def parse_accounting_command(self, command: str, company_id: str, currency: str = "ZAR") -> dict:
         """

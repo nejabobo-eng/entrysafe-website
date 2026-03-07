@@ -183,6 +183,7 @@
     <None Include="entrysafe-backend\DEPLOYMENT_WAITING_ROOM.md" />
     <None Include="entrysafe-backend\diagnose-firebase-issue.ps1" />
     <None Include="entrysafe-backend\EMERGENT_INTEGRATION_GUIDE.md" />
+    <None Include="entrysafe-backend\FINAL_INTEGRATION_SUMMARY.md" />
     <None Include="entrysafe-backend\firebase-credentials-for-render.json" />
     <None Include="entrysafe-backend\FIREBASE_INTERNAL_SERVER_ERROR_FIX.md" />
     <None Include="entrysafe-backend\flutter-client\ai_assistant_example.dart" />
