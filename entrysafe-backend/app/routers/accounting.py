@@ -63,6 +63,12 @@ async def process_ai_command(
             if company_doc:
                 company_id = company_doc["id"]
                 logger.info(f"Found existing company for user {request.user_id}: {company_id}")
+
+                # SAFETY: Ensure accounts exist (in case company was created but accounts weren't)
+                account_count = await db.chart_of_accounts.count_documents({"company_id": company_id})
+                if account_count == 0:
+                    logger.info(f"Company exists but no accounts found. Initializing accounts for {company_id}")
+                    await accounting_engine.initialize_chart_of_accounts(company_id)
             else:
                 # AUTO-CREATE COMPANY for new user
                 logger.info(f"Auto-creating company for user {request.user_id}")
