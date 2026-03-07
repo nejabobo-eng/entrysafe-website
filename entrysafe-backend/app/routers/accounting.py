@@ -135,17 +135,17 @@ async def process_ai_command(
         
         # Create journal entry (not posted yet)
         journal_entry = await accounting_engine.create_journal_entry(
-            company_id=request.company_id,
+            company_id=company_id,  # Fixed: Use auto-created company_id
             user_id=request.user_id,
             description=parsed_data["description"],
             lines=parsed_data["journal_lines"],
             date=parsed_data["date"],
             ai_generated=True
         )
-        
+
         # Create transaction preview
         preview = TransactionPreview(
-            company_id=request.company_id,
+            company_id=company_id,  # Fixed: Use auto-created company_id
             user_id=request.user_id,
             original_command=request.message,
             parsed_data=parsed_data,
