@@ -199,7 +199,7 @@ class TransactionPreview(BaseModel):
 class AICommandRequest(BaseModel):
     """Request for AI command processing"""
     user_id: str
-    company_id: str
+    company_id: Optional[str] = None  # Optional - backend will auto-create if missing
     message: str
 
 
