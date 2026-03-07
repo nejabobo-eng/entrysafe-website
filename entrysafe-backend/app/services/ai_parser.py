@@ -16,19 +16,75 @@ class AIAccountingParser:
         self.api_key = os.environ.get('OPENAI_KEY_ACCOUNTING') or os.environ.get('OPENAI_API_KEY')
         if not self.api_key:
             raise ValueError("OPENAI_KEY_ACCOUNTING (or OPENAI_API_KEY) not found in environment variables")
-    
+
+    def _normalize_command(self, command: str) -> str:
+        """
+        Normalize user input to improve AI parsing accuracy.
+
+        - Remove greetings and conversational fluff
+        - Normalize currency formats (r650 → 650 rand)
+        - Fix common typos
+        - Trim extra whitespace
+        """
+
+        normalized = command.strip()
+
+        # Remove common greetings and conversational phrases
+        greetings = [
+            r'^hi[,.\s]+',
+            r'^hello[,.\s]+',
+            r'^hey[,.\s]+',
+            r'^good\s+(morning|afternoon|evening)[,.\s]+',
+            r'i\s+would\s+like\s+to\s+',
+            r'i\s+want\s+to\s+',
+            r'can\s+you\s+(please\s+)?',
+            r'please\s+',
+        ]
+
+        for pattern in greetings:
+            normalized = re.sub(pattern, '', normalized, flags=re.IGNORECASE)
+
+        # Normalize currency formats
+        # r650 or R650 → 650 rand
+        normalized = re.sub(r'\br(\d+)\b', r'\1 rand', normalized, flags=re.IGNORECASE)
+
+        # Fix common typos
+        typo_fixes = {
+            r'\btrtansaction\b': 'transaction',
+            r'\btrasaction\b': 'transaction',
+            r'\btransction\b': 'transaction',
+            r'\breciept\b': 'receipt',
+            r'\bexpence\b': 'expense',
+            r'\bpayed\b': 'paid',
+        }
+
+        for typo, correction in typo_fixes.items():
+            normalized = re.sub(typo, correction, normalized, flags=re.IGNORECASE)
+
+        # Clean up multiple spaces
+        normalized = re.sub(r'\s+', ' ', normalized).strip()
+
+        logger.info(f"Command normalized: '{command}' → '{normalized}'")
+
+        return normalized
+
     async def parse_accounting_command(self, command: str, company_id: str, currency: str = "ZAR") -> dict:
         """
         Parse natural language command into structured accounting transaction.
-        
+
         Examples:
         - "Add 1500 rand income from consulting"
         - "Paid 500 rand for office supplies"
         - "Received 2000 from client ABC"
         - "Purchase equipment for 10000"
         """
-        
+
+        # Normalize command before sending to AI
+        normalized_command = self._normalize_command(command)
+
         system_message = f"""You are an expert accounting AI that converts natural language commands into double-entry accounting transactions.
+
+You can handle both direct commands and conversational messages. Extract the transaction details from the user's message, ignoring greetings and pleasantries.
 
 Your task is to analyze the user's command and determine:
 1. **Transaction type**: income, expense, asset purchase, liability, etc.
@@ -56,7 +112,7 @@ Expenses: Cost of Goods Sold, Salaries Expense, Rent Expense, Utilities Expense,
 
 **Examples:**
 
-Command: "Add 1500 rand income from consulting"
+Command: "Add 1500 rand income from consulting" OR "Hi, I'd like to add 1500 rand income from consulting"
 Response:
 {{
   "transaction_type": "income",
@@ -70,7 +126,7 @@ Response:
   ]
 }}
 
-Command: "Paid 500 rand for office supplies"
+Command: "Paid 500 rand for office supplies" OR "I want to record that I paid 500 for office stuff"
 Response:
 {{
   "transaction_type": "expense",
@@ -102,22 +158,24 @@ Response:
 1. Always return valid JSON only, no explanation
 2. Ensure debits equal credits
 3. Use account names exactly as listed above
-4. If the command is ambiguous, make the best guess based on context
-5. Always include the currency
-6. Date should be in YYYY-MM-DD format
+4. Extract transaction details from conversational messages (ignore greetings like "hi", "hello", "please")
+5. Handle various currency formats: "650", "r650", "R650", "650 rand" all mean 650 ZAR
+6. Fix common typos automatically (e.g., "trtansaction" → "transaction")
+7. Always include the currency
+8. Date should be in YYYY-MM-DD format
 
 Return ONLY a JSON object with the structure shown above.
 """
-        
+
         try:
             # Use OpenAI API
             from openai import AsyncOpenAI
-            
+
             client = AsyncOpenAI(api_key=self.api_key)
-            
+
             # Add current date context
             today = date.today().isoformat()
-            user_message = f"Today's date is {today}. Command: {command}"
+            user_message = f"Today's date is {today}. Command: {normalized_command}"
             
             # Send message and get response
             response = await client.chat.completions.create(
@@ -164,6 +222,26 @@ Return ONLY a JSON object with the structure shown above.
             
         except Exception as e:
             logger.error(f"Error parsing AI command: {str(e)}")
+            logger.error(f"Original command: {command}")
+            logger.error(f"Normalized command: {normalized_command}")
+
+            # Log to error tracking system
+            try:
+                from app.services.error_logger import log_error
+                log_error(
+                    error_type="API_ERROR",
+                    message="AI command parsing failed",
+                    details={
+                        "original_command": command,
+                        "normalized_command": normalized_command,
+                        "company_id": company_id,
+                        "currency": currency
+                    },
+                    exception=e
+                )
+            except:
+                pass  # Don't fail if error logging fails
+
             return {
                 "success": False,
                 "error": str(e),
