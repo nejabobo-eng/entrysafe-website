@@ -134,6 +134,7 @@
     <None Include="android\app\build.gradle.kts" />
     <None Include="android\app\build.gradle.kts.fixed" />
     <None Include="android\key.properties" />
+    <None Include="BACKEND_AWAIT_FIX.md" />
     <None Include="build_gradle_release.kts" />
     <None Include="CANCELLATION_VISUAL_GUIDE.md" />
     <None Include="DEPLOYMENT-ENV-VARS.md" />
@@ -159,12 +160,14 @@
     <None Include="entrysafe-backend\app\routers\cloud_backup.py" />
     <None Include="entrysafe-backend\app\routers\contact.py" />
     <None Include="entrysafe-backend\app\routers\documents.py" />
+    <None Include="entrysafe-backend\app\routers\logs.py" />
     <None Include="entrysafe-backend\app\routers\payments.py" />
     <None Include="entrysafe-backend\app\routers\users.py" />
     <None Include="entrysafe-backend\app\routers\__init__.py" />
     <None Include="entrysafe-backend\app\services\accounting_engine.py" />
     <None Include="entrysafe-backend\app\services\ai_parser.py" />
     <None Include="entrysafe-backend\app\services\document_manager.py" />
+    <None Include="entrysafe-backend\app\services\error_logger.py" />
     <None Include="entrysafe-backend\app\services\registers_generator.py" />
     <None Include="entrysafe-backend\app\services\reports_generator.py" />
     <None Include="entrysafe-backend\app\services\usage_service.py" />
