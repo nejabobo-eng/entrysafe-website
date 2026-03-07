@@ -84,7 +84,7 @@ async def process_ai_command(
                 await db.companies.insert_one(company_doc)
 
                 # Create default 20 accounts
-                await accounting_engine.create_default_accounts(company_id)
+                await accounting_engine.initialize_chart_of_accounts(company_id)
 
                 logger.info(f"Company auto-created: {company_id}")
 
