@@ -32,34 +32,71 @@ async def process_ai_command(
 ):
     """
     Process natural language accounting command and return preview.
-    
+
+    AUTO-CREATES company if user doesn't have one yet!
+
     Example:
     {
         "user_id": "user123",
-        "company_id": "company456",
+        "company_id": "company456",  // Optional - will auto-create if missing
         "message": "Add 1500 rand income from consulting"
     }
     """
-    
+
     try:
         # Initialize services
         accounting_engine = AccountingEngine(db)
         ai_parser = AIAccountingParser()
-        
-        # Get company details for currency
-        company_doc = await db.companies.find_one({"id": request.company_id})
+
+        # AUTO-FIND OR CREATE COMPANY for this user
+        company_id = request.company_id
+        company_doc = None
+
+        if company_id:
+            # Try to find by company_id
+            company_doc = await db.companies.find_one({"id": company_id})
+
         if not company_doc:
-            raise HTTPException(status_code=404, detail="Company not found")
-        
+            # Try to find by user_id (owner_uid)
+            company_doc = await db.companies.find_one({"owner_uid": request.user_id})
+
+            if company_doc:
+                company_id = company_doc["id"]
+                logger.info(f"Found existing company for user {request.user_id}: {company_id}")
+            else:
+                # AUTO-CREATE COMPANY for new user
+                logger.info(f"Auto-creating company for user {request.user_id}")
+
+                import uuid
+                from datetime import datetime
+
+                company_id = str(uuid.uuid4())
+                company_doc = {
+                    "id": company_id,
+                    "owner_uid": request.user_id,
+                    "name": "My Company",  # User can update in settings
+                    "currency": "ZAR",
+                    "country": "South Africa",
+                    "created_at": datetime.now(),
+                    "status": "active"
+                }
+
+                await db.companies.insert_one(company_doc)
+
+                # Create default 20 accounts
+                await accounting_engine.create_default_accounts(company_id)
+
+                logger.info(f"Company auto-created: {company_id}")
+
         currency = company_doc.get("currency", "ZAR")
-        
+
         # Parse command with AI
         result = await ai_parser.parse_accounting_command(
             command=request.message,
-            company_id=request.company_id,
+            company_id=company_id,
             currency=currency
         )
-        
+
         if not result["success"]:
             return AICommandResponse(
                 status="error",
@@ -67,9 +104,9 @@ async def process_ai_command(
                 transaction={},
                 message=f"Failed to parse command: {result.get('error', 'Unknown error')}"
             )
-        
+
         parsed_data = result["data"]
-        
+
         # Validate transaction
         validation = await ai_parser.validate_transaction(parsed_data)
         if not validation["valid"]:
