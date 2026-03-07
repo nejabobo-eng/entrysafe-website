@@ -67,8 +67,15 @@ async def process_ai_command(
                 # SAFETY: Ensure accounts exist (in case company was created but accounts weren't)
                 account_count = await db.chart_of_accounts.count_documents({"company_id": company_id})
                 if account_count == 0:
-                    logger.info(f"Company exists but no accounts found. Initializing accounts for {company_id}")
-                    await accounting_engine.initialize_chart_of_accounts(company_id)
+                    logger.warning(f"Company exists but no accounts found. Initializing accounts for {company_id}")
+                    try:
+                        await accounting_engine.initialize_chart_of_accounts(company_id)
+                        logger.info(f"Successfully initialized {account_count} accounts")
+                    except Exception as e:
+                        logger.error(f"Failed to initialize accounts: {str(e)}")
+                        raise HTTPException(status_code=500, detail=f"Failed to initialize accounts: {str(e)}")
+                else:
+                    logger.info(f"Company has {account_count} accounts")
             else:
                 # AUTO-CREATE COMPANY for new user
                 logger.info(f"Auto-creating company for user {request.user_id}")
@@ -90,9 +97,12 @@ async def process_ai_command(
                 await db.companies.insert_one(company_doc)
 
                 # Create default 20 accounts
-                await accounting_engine.initialize_chart_of_accounts(company_id)
-
-                logger.info(f"Company auto-created: {company_id}")
+                try:
+                    await accounting_engine.initialize_chart_of_accounts(company_id)
+                    logger.info(f"Company auto-created with accounts: {company_id}")
+                except Exception as e:
+                    logger.error(f"Failed to create accounts for new company: {str(e)}")
+                    raise HTTPException(status_code=500, detail=f"Company created but accounts failed: {str(e)}")
 
         currency = company_doc.get("currency", "ZAR")
 
