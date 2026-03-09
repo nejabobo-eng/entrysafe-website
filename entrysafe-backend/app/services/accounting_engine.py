@@ -128,12 +128,12 @@ class AccountingEngine:
             # Handle both dict and JournalLine object
             if isinstance(line, dict):
                 account_id = line["account_id"]
-                debit = line["debit"]
-                credit = line["credit"]
+                debit = float(line.get("debit") or 0)
+                credit = float(line.get("credit") or 0)
             else:
                 account_id = line.account_id
-                debit = line.debit
-                credit = line.credit
+                debit = float(line.debit or 0)
+                credit = float(line.credit or 0)
             
             account = await self.db.chart_of_accounts.find_one({
                 "id": account_id,
@@ -225,3 +225,4 @@ class AccountingEngine:
             await self.db.chart_of_accounts.insert_one(doc)
         
         logger.info(f"Initialized {len(default_accounts)} accounts for company {company_id}")
+
