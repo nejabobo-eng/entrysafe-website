@@ -383,7 +383,7 @@ async def get_expenses_register(
 
 # ============ COMPANY MANAGEMENT ============
 
-@api_router.post("/company")
+@api_router.post("/reject-transaction")`r`nasync def reject_transaction(`r`n    request: dict,`r`n    db=Depends(get_database)`r`n):`r`n    """`r`n    Reject and delete a previewed transaction.`r`n    """`r`n    `r`n    try:`r`n        preview_id = request.get("preview_id")`r`n        user_id = request.get("user_id")`r`n        `r`n        if not preview_id:`r`n            raise HTTPException(status_code=400, detail="preview_id is required")`r`n        `r`n        # Find and delete the preview`r`n        result = await db.transaction_previews.delete_one({`r`n            "id": preview_id`r`n        })`r`n        `r`n        if result.deleted_count == 0:`r`n            logger.warning(f"Preview {preview_id} not found or already deleted")`r`n            # Return success anyway - idempotent operation`r`n        `r`n        return {`r`n            "status": "rejected",`r`n            "message": "Transaction preview rejected and deleted"`r`n        }`r`n        `r`n    except HTTPException:`r`n        raise`r`n    except Exception as e:`r`n        logger.error(f"Error rejecting transaction: {str(e)}")`r`n        raise HTTPException(status_code=500, detail=str(e))`r`n`r`n@api_router.post("/company")
 async def create_company(
     company: Company,
     db=Depends(get_database)
