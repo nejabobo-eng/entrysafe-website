@@ -36,10 +36,6 @@ export default function Navbar() {
               Home
             </Link>
 
-            <Link to="/apps" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
-              📱 Apps
-            </Link>
-
             <Link to="/accounting-app" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
               💰 Accounting App
             </Link>

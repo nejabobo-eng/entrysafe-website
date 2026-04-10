@@ -15,7 +15,6 @@ import LiveFeeds from "./pages/LiveFeeds"
 import AccountingApp from "./pages/AccountingApp"
 import DocsApp from "./pages/DocsApp"
 import PricingApp from "./pages/PricingApp"
-import Apps from "./pages/Apps"
 import Testimonials from "./pages/Testimonials"
 import PaymentSuccess from "./pages/PaymentSuccess"
 import PaymentCancel from "./pages/PaymentCancel"
@@ -44,7 +43,6 @@ function App() {
           <Route path="/entry-safe" element={<AccountingApp />} />
           <Route path="/entry-safe-docs" element={<DocsApp />} />
           <Route path="/entry-safe-pricing" element={<PricingApp />} />
-          <Route path="/apps" element={<Apps />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancel" element={<PaymentCancel />} />
