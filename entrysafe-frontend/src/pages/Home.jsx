@@ -151,7 +151,7 @@ export default function Home() {
               <p className="text-gray-600 mb-4">
                 Powerful Android and Windows apps for accounting, documents, pricing, and storage management
               </p>
-              <Link to="/apps" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
+              <Link to="/accounting-app" className="text-gold font-semibold hover:text-gold-dark inline-flex items-center">
                 Explore Apps <ArrowRight size={16} className="ml-1" />
               </Link>
             </div>

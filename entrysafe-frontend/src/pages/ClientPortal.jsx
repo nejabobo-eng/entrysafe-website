@@ -80,7 +80,7 @@ export default function ClientPortal() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold text-navy">Entry Safe Apps</h2>
-              <Link to="/apps" className="text-gold hover:text-gold-dark font-semibold flex items-center gap-2">
+              <Link to="/accounting-app" className="text-gold hover:text-gold-dark font-semibold flex items-center gap-2">
                 View All Apps →
               </Link>
             </div>
