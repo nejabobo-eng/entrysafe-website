@@ -1,0 +1,26 @@
+
+  // Initialize company in backend (triggers auto-creation)
+  Future<void> _initializeCompanyInBackend(User firebaseUser) async {
+    try {
+      final idToken = await firebaseUser.getIdToken();
+      if (idToken == null) return;
+
+      // Make a dummy call to trigger company creation
+      await http.post(
+        Uri.parse('https://entrysafe-website.onrender.com/api/ai-command'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $idToken',
+        },
+        body: json.encode({
+          'message': 'initialize',
+          'user_id': firebaseUser.uid,
+        }),
+      );
+
+      developer.log('Company initialized for ${firebaseUser.email}', name: 'EntrySafe.Register');
+    } catch (e) {
+      developer.log('Company init failed (non-critical): $e', name: 'EntrySafe.Register');
+    }
+  }
+}

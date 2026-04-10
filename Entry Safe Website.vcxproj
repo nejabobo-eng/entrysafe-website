@@ -129,6 +129,12 @@
   <ItemGroup>
     <None Include=".github\copilot-instructions.md" />
     <None Include=".gitignore" />
+    <None Include="add_debug_logging.py" />
+    <None Include="add_recent_changes_correct.py" />
+    <None Include="add_recent_changes_full.py" />
+    <None Include="AI_ARCHITECTURE_COMPLETE.md" />
+    <None Include="AI_AUTOPOST_FIX.dart" />
+    <None Include="AI_AUTOPOST_FIX_README.md" />
     <None Include="AI_TRANSACTION_AUTOCREATE_SCHEMA.md" />
     <None Include="AI_TRANSACTION_IMPLEMENTATION_COMPLETE.md" />
     <None Include="android\app\build.gradle.kts" />
@@ -292,11 +298,30 @@
     <None Include="entrysafe-frontend\vite.config.js" />
     <None Include="entrysafe-frontend\WINDOWS-ICO-GUIDE.md" />
     <None Include="FINAL_SUMMARY.md" />
+    <None Include="fix_home_screen_errors.py" />
+    <None Include="fix_journal_line_json.py" />
+    <None Include="fix_method_position_final.py" />
+    <None Include="fix_provider_method.py" />
+    <None Include="fix_staging_flow.py" />
+    <None Include="fix_tolist.py" />
+    <None Include="fix_updatedAt.py" />
     <None Include="FLUTTER_AI_INTEGRATION_GUIDE.md" />
+    <None Include="IMPLEMENTATION_COMPLETE.md" />
     <None Include="LAUNCH-CHECKLIST.md" />
+    <None Include="lib\ai\ai_command_screen.dart" />
+    <None Include="lib\ai\ai_command_service.dart" />
+    <None Include="lib\ai\ai_error_handler.dart" />
+    <None Include="lib\ai\ai_logger.dart" />
+    <None Include="lib\ai\ai_parser.dart" />
+    <None Include="lib\ai\ai_state_provider.dart" />
+    <None Include="lib\ai\ai_transaction_router.dart" />
     <None Include="lib\config\pricing_config.dart" />
+    <None Include="lib\local\local_storage_service.dart" />
     <None Include="lib\main.dart" />
     <None Include="lib\main_updated.dart" />
+    <None Include="lib\models\user_profile.dart" />
+    <None Include="lib\models\user_profile_updated.dart" />
+    <None Include="lib\repositories\data_repository.dart" />
     <None Include="lib\screens\add_transaction_screen.dart" />
     <None Include="lib\screens\admin_dashboard_screen.dart" />
     <None Include="lib\screens\ai_command_center_screen.dart" />
@@ -304,16 +329,29 @@
     <None Include="lib\screens\dashboard_screen_complete.dart" />
     <None Include="lib\screens\dashboard_screen_new.dart" />
     <None Include="lib\screens\dashboard_screen_updated.dart" />
+    <None Include="lib\screens\home_screen.dart" />
+    <None Include="lib\screens\login_screen.dart" />
     <None Include="lib\screens\report_screen.dart" />
+    <None Include="lib\screens\signup_screen.dart" />
+    <None Include="lib\services\ai_service.dart" />
+    <None Include="lib\services\ai_service_fixed.dart" />
     <None Include="lib\services\register_service.dart" />
+    <None Include="lib\services\sync_manager.dart" />
     <None Include="lib\services\usage_service.dart" />
     <None Include="lib\widgets\ai_improvements_widget.dart" />
+    <None Include="lib\widgets\ai_suggestion_panel.dart" />
     <None Include="lib\widgets\app_drawer.dart" />
+    <None Include="LOGIN_FIX_COMPLETE.md" />
+    <None Include="LOGIN_NAVIGATION_FIX_COMPLETE.md" />
     <None Include="OPENAI-USAGE-GUIDE.md" />
     <None Include="QUICK-REFERENCE.md" />
     <None Include="QUICK_DEPLOY_WEBSITE.md" />
     <None Include="QUICK_START.md" />
     <None Include="READY-TO-DEPLOY.md" />
+    <None Include="RECENT_CHANGES_COMPLETE.md" />
+    <None Include="reposition_methods.py" />
+    <None Include="SHA_FINGERPRINTS.md" />
+    <None Include="TEST_GUIDE.md" />
     <None Include="update_manifest.ps1" />
     <None Include="WEBSITE_CANCELLATION_COMPLETE.md" />
     <None Include="WEBSITE_RESTRUCTURE_COMPLETE.md" />
@@ -322,6 +360,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="entrysafe-backend\requirements.txt" />
+    <Text Include="temp_function.txt" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="android\app\src\main\AndroidManifest.xml" />
