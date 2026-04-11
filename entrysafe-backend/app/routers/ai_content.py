@@ -14,13 +14,13 @@ from fastapi import APIRouter, HTTPException
 from datetime import datetime
 import os
 from typing import Optional
-import openai
+from openai import OpenAI
 import json
 
 router = APIRouter(prefix="/api/ai", tags=["AI Content"])
 
-# Initialize OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Initialize OpenAI client (v1.0.0+ API)
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Cache file location (persistent across Render restarts)
 CACHE_FILE = "/tmp/daily_content_cache.json"
@@ -76,7 +76,7 @@ async def get_daily_content():
 
     try:
         # Generate quote
-        quote_response = openai.ChatCompletion.create(
+        quote_response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
@@ -88,10 +88,10 @@ async def get_daily_content():
             max_tokens=150
         )
 
-        quote = quote_response["choices"][0]["message"]["content"].strip()
+        quote = quote_response.choices[0].message.content.strip()
 
         # Generate lesson
-        lesson_response = openai.ChatCompletion.create(
+        lesson_response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[
                 {
@@ -103,7 +103,7 @@ async def get_daily_content():
             max_tokens=300
         )
 
-        lesson = lesson_response["choices"][0]["message"]["content"].strip()
+        lesson = lesson_response.choices[0].message.content.strip()
 
         # Cache today's content
         daily_cache["date"] = today
