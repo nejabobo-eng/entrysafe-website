@@ -2,6 +2,12 @@
 AI Content Generation Router for Entry Safe
 Purpose: Generate daily business quotes and lessons in EntrySafe style
 Author: Mlungisi Mncube
+
+Features:
+- Midday-controlled generation (12:00 PM)
+- Persistent file caching (survives Render restarts)
+- Fallback content (if OpenAI fails)
+- Cost-optimized (once per day)
 """
 
 from fastapi import APIRouter, HTTPException
@@ -9,18 +15,47 @@ from datetime import datetime
 import os
 from typing import Optional
 import openai
+import json
 
 router = APIRouter(prefix="/api/ai", tags=["AI Content"])
 
 # Initialize OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# Simple in-memory cache (upgrade to DB later)
+# Cache file location (persistent across Render restarts)
+CACHE_FILE = "/tmp/daily_content_cache.json"
+
+# In-memory cache (faster than file reads on every request)
 daily_cache = {
     "date": None,
     "quote": "",
     "lesson": ""
 }
+
+
+def load_cache():
+    """Load cache from file if it exists"""
+    try:
+        if os.path.exists(CACHE_FILE):
+            with open(CACHE_FILE, "r") as f:
+                return json.load(f)
+    except Exception as e:
+        print(f"⚠️ Warning: Failed to load cache from file: {e}")
+
+    return {"date": None, "quote": "", "lesson": ""}
+
+
+def save_cache(data):
+    """Save cache to file for persistence"""
+    try:
+        with open(CACHE_FILE, "w") as f:
+            json.dump(data, f)
+    except Exception as e:
+        print(f"⚠️ Warning: Failed to save cache to file: {e}")
+
+
+# Load cache on startup
+daily_cache = load_cache()
 
 
 @router.get("/daily-content")

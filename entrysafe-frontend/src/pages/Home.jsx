@@ -29,11 +29,27 @@ export default function Home() {
     }
   }
 
-  const handleCopy = (text, id) => {
-    const formatted = text.replace(/\n{3,}/g, "\n\n").trim()
+  const formatForWhatsApp = (text) => {
+    return text.replace(/\n{3,}/g, "\n\n").trim()
+  }
+
+  const formatForFacebook = (text) => {
+    return text
+      .replace(/📘|💡|📌|⚖️|✅|❌|🚀|⏰|☀️|💰|🧠|🔁|⚙️|🎨|🧱|💡|⚠️|📋|👉|🔥|📤|🌐/g, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim()
+  }
+
+  const handleCopy = (text, format = "whatsapp") => {
+    const formatted = format === "facebook" ? formatForFacebook(text) : formatForWhatsApp(text)
     navigator.clipboard.writeText(formatted)
-    setCopiedId(id)
+    setCopiedId(format)
     setTimeout(() => setCopiedId(null), 2000)
+  }
+
+  const shareToWhatsApp = (text) => {
+    const formatted = encodeURIComponent(formatForWhatsApp(text))
+    window.open(`https://wa.me/?text=${formatted}`, "_blank")
   }
 
   return (
@@ -359,20 +375,45 @@ export default function Home() {
                   <div className="whitespace-pre-wrap text-lg leading-relaxed mb-6 font-medium text-gray-100">
                     {quote}
                   </div>
-                  <button
-                    onClick={() => handleCopy(quote, "quote")}
-                    className="inline-flex items-center gap-2 bg-gold text-navy font-semibold px-6 py-2 rounded-lg hover:bg-gold-light transition-all"
-                  >
-                    {copiedId === "quote" ? (
-                      <>
-                        <Check size={18} /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={18} /> Copy & Share
-                      </>
-                    )}
-                  </button>
+                  <div>
+                    <p className="text-sm text-gold/80 mb-3 font-semibold">📤 Share this content</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={() => handleCopy(quote, "whatsapp")}
+                        className="inline-flex items-center gap-2 bg-gold text-navy font-semibold px-4 py-2 rounded-lg hover:bg-gold-light transition-all text-sm"
+                      >
+                        {copiedId === "whatsapp" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📋 Copy
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleCopy(quote, "facebook")}
+                        className="inline-flex items-center gap-2 bg-white/20 text-white font-semibold px-4 py-2 rounded-lg hover:bg-white/30 transition-all text-sm border border-white/30"
+                      >
+                        {copiedId === "facebook" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📘 Facebook
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => shareToWhatsApp(quote)}
+                        className="inline-flex items-center gap-2 bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 transition-all text-sm"
+                      >
+                        📲 WhatsApp
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -394,20 +435,45 @@ export default function Home() {
                   <div className="whitespace-pre-wrap text-lg leading-relaxed mb-6 font-medium text-gray-100">
                     {lesson}
                   </div>
-                  <button
-                    onClick={() => handleCopy(lesson, "lesson")}
-                    className="inline-flex items-center gap-2 bg-white text-navy font-semibold px-6 py-2 rounded-lg hover:bg-gray-200 transition-all"
-                  >
-                    {copiedId === "lesson" ? (
-                      <>
-                        <Check size={18} /> Copied!
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={18} /> Copy & Share
-                      </>
-                    )}
-                  </button>
+                  <div>
+                    <p className="text-sm text-white/70 mb-3 font-semibold">📤 Share this content</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={() => handleCopy(lesson, "whatsapp")}
+                        className="inline-flex items-center gap-2 bg-white text-navy font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-all text-sm"
+                      >
+                        {copiedId === "whatsapp" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📋 Copy
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleCopy(lesson, "facebook")}
+                        className="inline-flex items-center gap-2 bg-white/20 text-white font-semibold px-4 py-2 rounded-lg hover:bg-white/30 transition-all text-sm border border-white/30"
+                      >
+                        {copiedId === "facebook" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📘 Facebook
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => shareToWhatsApp(lesson)}
+                        className="inline-flex items-center gap-2 bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 transition-all text-sm"
+                      >
+                        📲 WhatsApp
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
