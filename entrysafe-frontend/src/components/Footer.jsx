@@ -8,7 +8,6 @@ export default function Footer() {
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
     { name: 'About', path: '/about' },
-    { name: 'Knowledge Hub', path: '/knowledge-hub' },
     { name: 'Live Feeds', path: '/live-feeds' },
     { name: 'Contact', path: '/contact' },
   ];

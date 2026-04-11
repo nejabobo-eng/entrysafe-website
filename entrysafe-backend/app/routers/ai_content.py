@@ -11,16 +11,20 @@ Features:
 """
 
 from fastapi import APIRouter, HTTPException
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from typing import Optional
 from openai import OpenAI
 import json
+import pytz
 
 router = APIRouter(prefix="/api/ai", tags=["AI Content"])
 
 # Initialize OpenAI client (v1.0.0+ API)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+# South African timezone
+SAST = pytz.timezone("Africa/Johannesburg")
 
 # Cache file location (persistent across Render restarts)
 CACHE_FILE = "/tmp/daily_content_cache.json"
@@ -29,7 +33,8 @@ CACHE_FILE = "/tmp/daily_content_cache.json"
 daily_cache = {
     "date": None,
     "quote": "",
-    "lesson": ""
+    "lesson": "",
+    "accounting": ""
 }
 
 
@@ -58,19 +63,38 @@ def save_cache(data):
 daily_cache = load_cache()
 
 
+def get_business_day_key() -> str:
+    """
+    Get the content day key using South African timezone.
+    Before 8AM = yesterday's content
+    8AM onwards = today's content
+    This ensures content refreshes at 8AM SAST daily.
+    """
+    now = datetime.now(SAST)
+
+    # Before 8AM = use previous day's content
+    if now.hour < 8:
+        now = now - timedelta(days=1)
+
+    return now.strftime("%Y-%m-%d")
+
+
 @router.get("/daily-content")
 async def get_daily_content():
     """
-    Get daily business quote and lesson.
-    Generates once per day, then caches.
+    Get daily business quote, lesson, and accounting.
+    Generates once per day at 8AM SAST, then caches.
+    Before 8AM: returns yesterday's content
+    8AM onwards: generates today's content
     """
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = get_business_day_key()
 
     # Check cache
     if daily_cache["date"] == today:
         return {
             "quote": daily_cache["quote"],
             "lesson": daily_cache["lesson"],
+            "accounting": daily_cache["accounting"],
             "cached": True
         }
 
@@ -105,14 +129,32 @@ async def get_daily_content():
 
         lesson = lesson_response.choices[0].message.content.strip()
 
+        # Generate accounting insight
+        accounting_response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "user",
+                    "content": get_accounting_prompt()
+                }
+            ],
+            temperature=0.7,
+            max_tokens=300
+        )
+
+        accounting = accounting_response.choices[0].message.content.strip()
+
         # Cache today's content
         daily_cache["date"] = today
         daily_cache["quote"] = quote
         daily_cache["lesson"] = lesson
+        daily_cache["accounting"] = accounting
+        save_cache(daily_cache)
 
         return {
             "quote": quote,
             "lesson": lesson,
+            "accounting": accounting,
             "cached": False
         }
 
@@ -248,5 +290,75 @@ Good customer service is not a once-off action — it must be consistent.
 💡 Consistency builds trust, and trust builds long-term business.
 
 Customers return where they feel valued.
+
+🌐 www.entrysafe.co.za"""
+
+
+def get_accounting_prompt() -> str:
+    """
+    EntrySafe Accounting Generation Prompt
+    Teaches practical financial literacy for small business owners
+    Tuned to match Mlungisi's teaching patterns
+    """
+    return """Write a practical accounting teaching message for small business owners.
+
+Use this format exactly:
+
+📊 EntrySafe Focus – [Simple accounting topic]
+
+Good day everyone 👋
+
+Teach one accounting principle using:
+
+💡 Clear definition or explanation
+📌 Practical steps or examples (2–4 points)
+⚖️ A simple rule or comparison
+
+Keep it:
+- Simple language (no jargon)
+- Practical and actionable
+- Real business thinking (not textbook)
+- 6–12 lines maximum
+- Sound like a real accountant teaching a friend
+
+Topics to cover over time:
+- What accounting really is
+- Bookkeeping vs accounting
+- Financial statements (Income Statement, Balance Sheet, Cash Flow)
+- Assets, liabilities, and equity
+- Recording transactions
+- Profit vs cash
+- Common accounting mistakes
+
+NEVER:
+- Use "Lesson 1", "Lesson 2" numbering
+- Sound like a textbook
+- Include jargon without explaining
+- Go too technical
+
+ALWAYS end with:
+🌐 www.entrysafe.co.za
+
+EXAMPLE:
+
+📊 EntrySafe Focus – What Accounting Really Is
+
+Good day everyone 👋
+
+Accounting is not only for big companies or professionals — it is simply the system of understanding your business money.
+
+💡 In simple terms:
+Accounting is how you record, organize, and understand everything your business earns and spends.
+
+📌 Why it matters:
+• Helps you see if your business is making profit or loss
+• Shows where your money is going
+• Supports better decision-making
+• Keeps your business financially controlled
+
+⚖️ Simple truth:
+If you don't understand your numbers, you don't fully understand your business.
+
+Accounting is not about complexity — it's about clarity and control.
 
 🌐 www.entrysafe.co.za"""

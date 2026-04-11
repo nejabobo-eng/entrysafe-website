@@ -52,10 +52,6 @@ export default function Navbar() {
               💼 Services
             </Link>
 
-            <Link to="/knowledge-hub" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
-              📚 Knowledge
-            </Link>
-
             <Link to="/live-feeds" className="text-white hover:text-gold px-3 py-2 rounded-lg transition-colors font-medium">
               📊 Feeds
             </Link>
@@ -160,10 +156,6 @@ export default function Navbar() {
 
             <Link to="/services" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
               💼 Services
-            </Link>
-
-            <Link to="/knowledge-hub" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">
-              📚 Knowledge
             </Link>
 
             <Link to="/live-feeds" onClick={() => setMobileMenuOpen(false)} className="block text-white hover:bg-white hover:bg-opacity-10 px-3 py-2 rounded-lg transition-colors">

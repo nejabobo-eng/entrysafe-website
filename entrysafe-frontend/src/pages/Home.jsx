@@ -7,12 +7,24 @@ import { ArrowRight, Copy, Check } from "lucide-react"
 export default function Home() {
   const [quote, setQuote] = useState("")
   const [lesson, setLesson] = useState("")
+  const [accounting, setAccounting] = useState("")
   const [loading, setLoading] = useState(true)
   const [copiedId, setCopiedId] = useState(null)
 
   useEffect(() => {
     fetchDailyContent()
   }, [])
+
+  // Initialize AdSense
+  useEffect(() => {
+    if (window.adsbygoogle && quote && lesson && accounting) {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({})
+      } catch (e) {
+        console.log("AdSense not ready yet")
+      }
+    }
+  }, [quote, lesson, accounting])
 
   const fetchDailyContent = async () => {
     try {
@@ -23,9 +35,10 @@ export default function Home() {
 
       if (response.ok) {
         const data = await response.json()
-        console.log("✅ Content received:", { quote: data.quote?.substring(0, 50), lesson: data.lesson?.substring(0, 50) })
+        console.log("✅ Content received:", { quote: data.quote?.substring(0, 50), lesson: data.lesson?.substring(0, 50), accounting: data.accounting?.substring(0, 50) })
         setQuote(data.quote)
         setLesson(data.lesson)
+        setAccounting(data.accounting)
       } else {
         console.error("❌ API error:", response.status, response.statusText)
       }
@@ -42,7 +55,7 @@ export default function Home() {
 
   const formatForFacebook = (text) => {
     return text
-      .replace(/📘|💡|📌|⚖️|✅|❌|🚀|⏰|☀️|💰|🧠|🔁|⚙️|🎨|🧱|💡|⚠️|📋|👉|🔥|📤|🌐/g, "")
+      .replace(/📘|💡|📌|⚖️|✅|❌|🚀|⏰|☀️|💰|🧠|🔁|⚙️|🎨|🧱|💡|⚠️|📋|👉|🔥|📤|🌐|📊/g, "")
       .replace(/\n{3,}/g, "\n\n")
       .trim()
   }
@@ -190,6 +203,54 @@ export default function Home() {
                       </button>
                       <button
                         onClick={() => shareToWhatsApp(lesson)}
+                        className="inline-flex items-center gap-2 bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 transition-all text-sm"
+                      >
+                        📲 WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Accounting Card */}
+              {accounting && (
+                <div className="bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border-2 border-cyan-400/50 rounded-xl p-8 hover:shadow-2xl transition-all">
+                  <div className="whitespace-pre-wrap text-lg leading-relaxed mb-6 font-medium text-gray-100">
+                    {accounting}
+                  </div>
+                  <div>
+                    <p className="text-sm text-cyan-300/80 mb-3 font-semibold">📤 Share this content</p>
+                    <div className="flex flex-wrap gap-3">
+                      <button
+                        onClick={() => handleCopy(accounting, "whatsapp")}
+                        className="inline-flex items-center gap-2 bg-cyan-400 text-navy font-semibold px-4 py-2 rounded-lg hover:bg-cyan-300 transition-all text-sm"
+                      >
+                        {copiedId === "whatsapp" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📋 Copy
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleCopy(accounting, "facebook")}
+                        className="inline-flex items-center gap-2 bg-white/20 text-white font-semibold px-4 py-2 rounded-lg hover:bg-white/30 transition-all text-sm border border-white/30"
+                      >
+                        {copiedId === "facebook" ? (
+                          <>
+                            <Check size={16} /> Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={16} /> 📘 Facebook
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => shareToWhatsApp(accounting)}
                         className="inline-flex items-center gap-2 bg-green-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-green-600 transition-all text-sm"
                       >
                         📲 WhatsApp
