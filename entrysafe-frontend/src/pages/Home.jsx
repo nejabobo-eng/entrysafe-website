@@ -15,16 +15,19 @@ export default function Home() {
     fetchDailyContent()
   }, [])
 
-  // Initialize AdSense
+  // Initialize AdSense after content loads (Strict initialization)
   useEffect(() => {
-    if (window.adsbygoogle && quote && lesson && accounting) {
+    // Only push after all 3 widgets are loaded
+    if (quote && lesson && accounting && window.adsbygoogle) {
       try {
+        // Push to adsbygoogle queue to render ads
         (window.adsbygoogle = window.adsbygoogle || []).push({})
+        console.log("✅ AdSense initialized - ads should render now")
       } catch (e) {
-        console.log("AdSense not ready yet")
+        console.warn("⚠️ AdSense not ready:", e.message)
       }
     }
-  }, [quote, lesson, accounting])
+  }, [quote, lesson, accounting]) // Re-run only when content changes
 
   const fetchDailyContent = async () => {
     try {
@@ -152,18 +155,6 @@ export default function Home() {
                 </div>
               )}
 
-              {/* AdSense Banner */}
-              <div className="flex justify-center py-4">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: "block", width: "100%", maxWidth: "728px", height: "90px" }}
-                  data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-                  data-ad-slot="xxxxxxxx"
-                  data-ad-format="horizontal"
-                  data-full-width-responsive="true"
-                ></ins>
-              </div>
-
               {/* Lesson Card */}
               {lesson && (
                 <div className="bg-gradient-to-br from-white/10 to-white/5 border-2 border-white/20 rounded-xl p-8 hover:shadow-2xl transition-all">
@@ -211,6 +202,18 @@ export default function Home() {
                   </div>
                 </div>
               )}
+
+              {/* AdSense Banner - Between Lesson and Accounting (High CTR Position) */}
+              <div className="flex justify-center py-4">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: "block", width: "100%", maxWidth: "728px", height: "90px" }}
+                  data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                  data-ad-slot="xxxxxxxx"
+                  data-ad-format="horizontal"
+                  data-full-width-responsive="true"
+                ></ins>
+              </div>
 
               {/* Accounting Card */}
               {accounting && (

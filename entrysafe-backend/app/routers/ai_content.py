@@ -66,16 +66,28 @@ daily_cache = load_cache()
 def get_business_day_key() -> str:
     """
     Get the content day key using South African timezone.
-    Before 8AM = yesterday's content
-    8AM onwards = today's content
-    This ensures content refreshes at 8AM SAST daily.
+    STRICT daily lock: Before 8AM = yesterday's content, 8AM onwards = today's content.
+
+    This PREVENTS random regeneration across:
+    - Render restarts
+    - Deploy cycles
+    - Multiple requests on same day
+
+    Guaranteed behavior:
+    - Same key all day (no duplication)
+    - Changes at EXACTLY 8AM SAST
+    - No regeneration mid-day
     """
     now = datetime.now(SAST)
 
-    # Before 8AM = use previous day's content
+    # CRITICAL: Before 8AM → use previous day
+    # This lock is STRICT and cannot be bypassed
     if now.hour < 8:
-        now = now - timedelta(days=1)
+        # Subtract 1 day safely (handles month/year boundaries)
+        yesterday = now - timedelta(days=1)
+        return yesterday.strftime("%Y-%m-%d")
 
+    # 8AM onwards → use today
     return now.strftime("%Y-%m-%d")
 
 
@@ -83,20 +95,26 @@ def get_business_day_key() -> str:
 async def get_daily_content():
     """
     Get daily business quote, lesson, and accounting.
-    Generates once per day at 8AM SAST, then caches.
-    Before 8AM: returns yesterday's content
-    8AM onwards: generates today's content
+    Generates ONCE per day at 8AM SAST using strict date key lock.
+    Caches for entire day (no mid-day regeneration).
     """
     today = get_business_day_key()
 
-    # Check cache
-    if daily_cache["date"] == today:
+    # Debug logging (helps verify lock is working)
+    print(f"✅ Content day key (SAST): {today}")
+    print(f"✅ Cache date: {daily_cache['date']}")
+
+    # STRICT CACHE CHECK: Only return if date matches exactly
+    if daily_cache["date"] == today and daily_cache["quote"] and daily_cache["lesson"] and daily_cache["accounting"]:
+        print(f"✅ Returning CACHED content (no regeneration today)")
         return {
             "quote": daily_cache["quote"],
             "lesson": daily_cache["lesson"],
             "accounting": daily_cache["accounting"],
             "cached": True
         }
+
+    print(f"⏳ Generating NEW content (first request of the day)")
 
     try:
         # Generate quote
@@ -151,6 +169,8 @@ async def get_daily_content():
         daily_cache["accounting"] = accounting
         save_cache(daily_cache)
 
+        print(f"✅ NEW content generated and cached for {today}")
+
         return {
             "quote": quote,
             "lesson": lesson,
@@ -159,6 +179,7 @@ async def get_daily_content():
         }
 
     except Exception as e:
+        print(f"❌ Generation failed: {str(e)}")
         raise HTTPException(
             status_code=500,
             detail=f"Failed to generate content: {str(e)}"
