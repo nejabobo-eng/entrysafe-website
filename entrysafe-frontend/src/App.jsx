@@ -10,7 +10,6 @@ import AccountSettings from "./pages/AccountSettings"
 import Contact from "./pages/Contact"
 import Services from "./pages/Services"
 import About from "./pages/About"
-import KnowledgeHub from "./pages/KnowledgeHub"
 import LiveFeeds from "./pages/LiveFeeds"
 import AccountingApp from "./pages/AccountingApp"
 import DocsApp from "./pages/DocsApp"
@@ -33,7 +32,6 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
-          <Route path="/knowledge-hub" element={<KnowledgeHub />} />
           <Route path="/live-feeds" element={<LiveFeeds />} />
           <Route path="/accounting-app" element={<AccountingApp />} />
           <Route path="/docs-app" element={<DocsApp />} />
