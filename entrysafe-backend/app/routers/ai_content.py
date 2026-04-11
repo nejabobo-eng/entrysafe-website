@@ -21,7 +21,7 @@ import pytz
 router = APIRouter(prefix="/api/ai", tags=["AI Content"])
 
 # Initialize OpenAI client (v1.0.0+ API)
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.getenv("OPENAI_KEY_ACCOUNTING"))
 
 # South African timezone
 SAST = pytz.timezone("Africa/Johannesburg")

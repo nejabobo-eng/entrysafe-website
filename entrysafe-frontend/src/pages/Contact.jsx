@@ -209,12 +209,12 @@ function Contact() {
             <h3 className="font-semibold mb-1">Hours</h3>
             <p className="text-gray-300 text-sm">Mon-Fri: 9AM - 5PM</p>
           </div>
-                  </div>
-                </div>
-              </div>
-              <Footer />
-            </>
-          );
-        }
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <Footer />
+                                        </>
+                                      );
+                                    }
 
-export default Contact;
+                                export default Contact;

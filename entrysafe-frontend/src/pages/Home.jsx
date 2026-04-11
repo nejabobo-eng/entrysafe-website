@@ -17,15 +17,24 @@ export default function Home() {
 
   // Initialize AdSense after content loads (Strict initialization)
   useEffect(() => {
-    // Only push after all 3 widgets are loaded
-    if (quote && lesson && accounting && window.adsbygoogle) {
-      try {
-        // Push to adsbygoogle queue to render ads
-        (window.adsbygoogle = window.adsbygoogle || []).push({})
-        console.log("✅ AdSense initialized - ads should render now")
-      } catch (e) {
-        console.warn("⚠️ AdSense not ready:", e.message)
+    // Only push after all 3 widgets are loaded AND script is ready
+    if (quote && lesson && accounting) {
+      // Check if adsbygoogle is loaded (with retry logic)
+      const initializeAdSense = () => {
+        if (window.adsbygoogle) {
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({})
+            console.log("✅ AdSense initialized - ads should render now")
+          } catch (e) {
+            console.warn("⚠️ AdSense error:", e.message)
+          }
+        } else {
+          // Script not loaded yet, retry in 500ms
+          setTimeout(initializeAdSense, 500)
+        }
       }
+
+      initializeAdSense()
     }
   }, [quote, lesson, accounting]) // Re-run only when content changes
 
@@ -203,16 +212,12 @@ export default function Home() {
                 </div>
               )}
 
-              {/* AdSense Banner - Between Lesson and Accounting (High CTR Position) */}
-              <div className="flex justify-center py-4">
-                <ins
-                  className="adsbygoogle"
-                  style={{ display: "block", width: "100%", maxWidth: "728px", height: "90px" }}
-                  data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
-                  data-ad-slot="xxxxxxxx"
-                  data-ad-format="horizontal"
-                  data-full-width-responsive="true"
-                ></ins>
+              {/* Ad Space - Reserved for monetization (Coming soon) */}
+              <div className="flex justify-center py-8 px-4">
+                <div className="w-full max-w-xl bg-gradient-to-r from-gray-700/20 to-gray-600/20 border-2 border-dashed border-gray-500/40 rounded-lg p-8 text-center">
+                  <p className="text-gray-400 text-sm font-medium">Advertisement Space</p>
+                  <p className="text-gray-500 text-xs mt-2">Reserved for future monetization</p>
+                </div>
               </div>
 
               {/* Accounting Card */}
