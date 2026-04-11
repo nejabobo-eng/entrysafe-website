@@ -1,9 +1,41 @@
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { Shield, FileText, Calculator, TrendingUp, Users, CheckCircle, ArrowRight, Smartphone, Monitor, Cloud, Lock, Zap, Award, BarChart3, FolderOpen, DollarSign, HardDrive, Phone } from "lucide-react"
+import { Shield, FileText, Calculator, TrendingUp, Users, CheckCircle, ArrowRight, Smartphone, Monitor, Cloud, Lock, Zap, Award, BarChart3, FolderOpen, DollarSign, HardDrive, Phone, Copy, Check } from "lucide-react"
 
 export default function Home() {
+  const [quote, setQuote] = useState("")
+  const [lesson, setLesson] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [copiedId, setCopiedId] = useState(null)
+
+  useEffect(() => {
+    fetchDailyContent()
+  }, [])
+
+  const fetchDailyContent = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/ai/daily-content`)
+      if (response.ok) {
+        const data = await response.json()
+        setQuote(data.quote)
+        setLesson(data.lesson)
+      }
+    } catch (error) {
+      console.error("Failed to fetch daily content:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCopy = (text, id) => {
+    const formatted = text.replace(/\n{3,}/g, "\n\n").trim()
+    navigator.clipboard.writeText(formatted)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
+  }
+
   return (
     <>
       <Navbar />
@@ -299,13 +331,92 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link
-              to="/apps"
+              to="/accounting-app"
               className="inline-flex items-center bg-navy text-white font-bold px-8 py-4 rounded-lg hover:bg-navy-dark transition-all shadow-lg hover:shadow-xl"
             >
               Download Apps & View Pricing
               <ArrowRight className="ml-2" size={20} />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Daily AI Content Section */}
+      <section className="py-20 bg-gradient-to-br from-navy via-navy-dark to-navy text-white">
+        <div className="max-w-4xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              💡 Daily Business Wisdom
+            </h2>
+            <p className="text-xl text-gold">Learn something new every day to grow your business</p>
+          </div>
+
+          {!loading ? (
+            <div className="space-y-8">
+              {/* Quote Card */}
+              {quote && (
+                <div className="bg-gradient-to-br from-gold/10 to-gold/5 border-2 border-gold rounded-xl p-8 hover:shadow-2xl transition-all">
+                  <div className="whitespace-pre-wrap text-lg leading-relaxed mb-6 font-medium text-gray-100">
+                    {quote}
+                  </div>
+                  <button
+                    onClick={() => handleCopy(quote, "quote")}
+                    className="inline-flex items-center gap-2 bg-gold text-navy font-semibold px-6 py-2 rounded-lg hover:bg-gold-light transition-all"
+                  >
+                    {copiedId === "quote" ? (
+                      <>
+                        <Check size={18} /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={18} /> Copy & Share
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* AdSense Banner */}
+              <div className="flex justify-center py-4">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: "block", width: "100%", maxWidth: "728px", height: "90px" }}
+                  data-ad-client="ca-pub-xxxxxxxxxxxxxxxx"
+                  data-ad-slot="xxxxxxxx"
+                  data-ad-format="horizontal"
+                  data-full-width-responsive="true"
+                ></ins>
+              </div>
+
+              {/* Lesson Card */}
+              {lesson && (
+                <div className="bg-gradient-to-br from-white/10 to-white/5 border-2 border-white/20 rounded-xl p-8 hover:shadow-2xl transition-all">
+                  <div className="whitespace-pre-wrap text-lg leading-relaxed mb-6 font-medium text-gray-100">
+                    {lesson}
+                  </div>
+                  <button
+                    onClick={() => handleCopy(lesson, "lesson")}
+                    className="inline-flex items-center gap-2 bg-white text-navy font-semibold px-6 py-2 rounded-lg hover:bg-gray-200 transition-all"
+                  >
+                    {copiedId === "lesson" ? (
+                      <>
+                        <Check size={18} /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={18} /> Copy & Share
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gold"></div>
+              <p className="mt-4 text-gold">Loading today's wisdom...</p>
+            </div>
+          )}
         </div>
       </section>
 

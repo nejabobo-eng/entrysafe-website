@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 
 from app.database import connect_to_mongo, close_mongo_connection
-from app.routers import users, documents, admin, contact, ai, payments, cloud_backup, accounting
+from app.routers import users, documents, admin, contact, ai, payments, cloud_backup, accounting, ai_content
 
 load_dotenv()
 
@@ -44,6 +44,7 @@ app.include_router(documents.router)
 app.include_router(admin.router)
 app.include_router(contact.router)
 app.include_router(ai.router)
+app.include_router(ai_content.router)  # NEW: Daily AI content (quotes + lessons)
 app.include_router(payments.router)
 app.include_router(cloud_backup.router)
 app.include_router(accounting.api_router)  # NEW: Comprehensive accounting system

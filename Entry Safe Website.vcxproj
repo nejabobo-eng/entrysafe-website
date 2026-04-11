@@ -163,6 +163,7 @@
     <None Include="entrysafe-backend\app\routers\accounting.py" />
     <None Include="entrysafe-backend\app\routers\admin.py" />
     <None Include="entrysafe-backend\app\routers\ai.py" />
+    <None Include="entrysafe-backend\app\routers\ai_content.py" />
     <None Include="entrysafe-backend\app\routers\cloud_backup.py" />
     <None Include="entrysafe-backend\app\routers\contact.py" />
     <None Include="entrysafe-backend\app\routers\documents.py" />
