@@ -47,7 +47,7 @@ def load_cache():
     except Exception as e:
         print(f"⚠️ Warning: Failed to load cache from file: {e}")
 
-    return {"date": None, "quote": "", "lesson": ""}
+    return {"date": None, "quote": "", "lesson": "", "accounting": ""}
 
 
 def save_cache(data):
