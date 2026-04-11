@@ -87,6 +87,7 @@ export default function Home() {
             </h2>
             <p className="text-gold">Learn something new every day to grow your business</p>
           </div>
+          {/* Widget powered by EntrySafe AI */}
 
           {!loading ? (
             <div className="space-y-8">
