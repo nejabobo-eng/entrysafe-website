@@ -100,6 +100,18 @@ async def get_daily_content():
     """
     today = get_business_day_key()
 
+    # Refresh in-memory cache from disk on every request. This ensures
+    # instances pick up cache changes made by other processes or during
+    # a manual regeneration. It reduces stale-data windows when multiple
+    # processes or deployments are involved.
+    global daily_cache
+    try:
+        daily_cache = load_cache()
+        print(f"♻️ Reloaded cache from disk: {daily_cache.get('date')}")
+    except Exception:
+        # If reloading fails for any reason, continue using in-memory cache
+        print("⚠️ Warning: Failed to reload cache from disk, using in-memory cache")
+
     # Get current SAST time for detailed debugging
     now = datetime.now(SAST)
 
