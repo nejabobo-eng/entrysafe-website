@@ -100,9 +100,17 @@ async def get_daily_content():
     """
     today = get_business_day_key()
 
-    # Debug logging (helps verify lock is working)
-    print(f"✅ Content day key (SAST): {today}")
-    print(f"✅ Cache date: {daily_cache['date']}")
+    # Get current SAST time for detailed debugging
+    now = datetime.now(SAST)
+
+    # Enhanced debug logging
+    print(f"🕐 Current SAST time: {now.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"📅 Content day key (SAST): {today}")
+    print(f"💾 Cache date: {daily_cache['date']}")
+    print(f"🔍 Date match: {daily_cache['date'] == today}")
+    print(f"📝 Has quote: {bool(daily_cache['quote'])}")
+    print(f"📚 Has lesson: {bool(daily_cache['lesson'])}")
+    print(f"💰 Has accounting: {bool(daily_cache['accounting'])}")
 
     # STRICT CACHE CHECK: Only return if date matches exactly
     if daily_cache["date"] == today and daily_cache["quote"] and daily_cache["lesson"] and daily_cache["accounting"]:
@@ -184,6 +192,23 @@ async def get_daily_content():
             status_code=500,
             detail=f"Failed to generate content: {str(e)}"
         )
+
+
+@router.post("/regenerate-content")
+async def regenerate_content():
+    """
+    Force regenerate content (admin/testing endpoint).
+    Clears cache and generates new content immediately.
+    """
+    global daily_cache
+
+    print(f"🔄 Force regeneration requested")
+
+    # Clear cache
+    daily_cache = {"date": None, "quote": "", "lesson": "", "accounting": ""}
+
+    # Regenerate by calling the main endpoint
+    return await get_daily_content()
 
 
 def get_quote_prompt() -> str:
