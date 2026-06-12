@@ -24,7 +24,7 @@ export default function Services() {
     {
       icon: <Calculator className="w-12 h-12" />,
       title: "Tax Assistance",
-      description: "SARS registration, tax returns support, and professional tax guidance.",
+      description: "SARS registration, returns support, and professional tax guidance.",
       features: [
         "SARS registration",
         "Tax returns support",
@@ -183,18 +183,18 @@ export default function Services() {
     },
     {
       icon: <Shield className="w-8 h-8" />,
-      title: "Compliance Health Check",
-      price: "R650"
+      title: "COIDA: ROE Submission",
+      price: "R400"
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
-      title: "Cash Flow Projections",
-      price: "R750"
+      title: "COIDA: ROE Corrections",
+      price: "R200"
     },
     {
       icon: <FileText className="w-8 h-8" />,
-      title: "Company Deregistration",
-      price: "R600"
+      title: "COIDA: Letter of Good Standing",
+      price: "R300"
     }
   ];
 
@@ -402,7 +402,7 @@ export default function Services() {
                   <span className="bg-white bg-opacity-20 px-3 py-1 rounded text-sm">Windows</span>
                 </div>
                 <Link
-                  to="/entry-safe"
+                  to="/apps"
                   className="block mt-6 bg-gold text-navy font-bold py-3 px-6 rounded-lg hover:bg-gold-light transition-all text-center"
                 >
                   Learn More
@@ -436,7 +436,7 @@ export default function Services() {
                   <span className="bg-white bg-opacity-20 px-3 py-1 rounded text-sm">Windows</span>
                 </div>
                 <Link
-                  to="/entry-safe-docs"
+                  to="/apps"
                   className="block mt-6 bg-gold text-navy font-bold py-3 px-6 rounded-lg hover:bg-gold-light transition-all text-center"
                 >
                   Learn More
@@ -470,7 +470,7 @@ export default function Services() {
                   <span className="bg-white bg-opacity-40 px-3 py-1 rounded text-sm">Mobile</span>
                 </div>
                 <Link
-                  to="/entry-safe-pricing"
+                  to="/apps"
                   className="block mt-6 bg-navy text-white font-bold py-3 px-6 rounded-lg hover:bg-navy-dark transition-all text-center"
                 >
                   View Pricing
@@ -497,7 +497,7 @@ export default function Services() {
                 </div>
               </div>
               <Link
-                to="/entry-safe-pricing"
+                to="/apps"
                 className="inline-flex items-center bg-gold text-navy font-bold px-8 py-4 rounded-lg hover:bg-gold-light transition-all shadow-lg hover:shadow-xl"
               >
                 View Full Pricing Details

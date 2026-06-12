@@ -6,9 +6,9 @@ export default function Footer() {
 
   const quickLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Apps', path: '/apps' },
     { name: 'Services', path: '/services' },
     { name: 'About', path: '/about' },
-    { name: 'Live Feeds', path: '/live-feeds' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -60,15 +60,7 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link
-                  to="/portal"
-                  className="text-sm text-gold hover:text-gold-light transition-colors flex items-center space-x-2 font-semibold"
-                >
-                  <span>🔒</span>
-                  <span>Client Portal</span>
-                </Link>
-              </li>
+
             </ul>
           </div>
 
@@ -156,19 +148,9 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center space-x-6">
-            <Link
-              to="/about"
-              className="text-xs text-gray-300 hover:text-gold transition-colors"
-            >
-              Privacy Policy
-            </Link>
+            <span className="text-xs text-gray-400">Privacy Policy</span>
             <span className="text-gray-600">•</span>
-            <Link
-              to="/about"
-              className="text-xs text-gray-300 hover:text-gold transition-colors"
-            >
-              Terms of Service
-            </Link>
+            <span className="text-xs text-gray-400">Terms of Service</span>
             <span className="text-gray-600">•</span>
             <a
               href="https://www.cipc.co.za"

@@ -51,7 +51,7 @@ function Contact() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-navy via-navy-dark to-navy py-12 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-navy via-navy-dark to-navy py-24 px-4">
         <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
