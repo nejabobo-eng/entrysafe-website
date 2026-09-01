@@ -191,7 +191,9 @@ function Contact() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             <h3 className="font-semibold mb-1">Email</h3>
-            <p className="text-gray-300 text-sm">entrysafeapps@gmail.com</p>
+            <p className="text-gray-300 text-sm">
+              <a href="mailto:info@entrysafe.co.za" className="hover:text-gold transition-colors">info@entrysafe.co.za</a>
+            </p>
           </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">

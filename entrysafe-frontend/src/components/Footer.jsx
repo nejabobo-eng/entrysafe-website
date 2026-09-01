@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Clock, MessageCircle, Shield, FileText, Calculator, TrendingUp, Briefcase, Palette } from 'lucide-react';
+import Logo from './Logo';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -27,15 +28,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Section 1 - Brand */}
           <div>
-            <Link to="/" className="flex items-center space-x-2 mb-4 hover:opacity-80 transition-opacity">
-              <span className="text-3xl">🔐</span>
-              <span className="text-2xl font-bold">EntrySafe</span>
+            <Link to="/" className="mb-5 inline-flex hover:opacity-90 transition-opacity">
+              <Logo light />
             </Link>
             <p className="text-sm text-gray-300 mb-4">
-              Empowering South African entrepreneurs with professional business services and secure document management.
+              Professional accounting, tax, and compliance services for South African businesses.
             </p>
             <p className="text-xs text-gold font-semibold">
-              A service by Mlu Accounting Services
+              Mlu Accounting Services t/a EntrySafe
             </p>
             <p className="text-xs text-gray-400 mt-1">
               CIBA Certified Accountant
@@ -97,8 +97,8 @@ export default function Footer() {
               <li className="flex items-start space-x-3 text-sm text-gray-300">
                 <Mail className="text-gold flex-shrink-0 mt-0.5" size={16} />
                 <div>
-                  <a href="mailto:entrysafeapps@gmail.com" className="hover:text-gold transition-colors">
-                    entrysafeapps@gmail.com
+                  <a href="mailto:info@entrysafe.co.za" className="hover:text-gold transition-colors">
+                    info@entrysafe.co.za
                   </a>
                 </div>
               </li>
@@ -140,7 +140,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
           <div className="text-sm text-gray-300 text-center md:text-left">
             <p>
-              © {currentYear} <span className="font-semibold text-white">Mlu Accounting Services</span>. All rights reserved.
+              © {currentYear} <span className="font-semibold text-white">Mlu Accounting Services</span> t/a <span className="font-semibold text-white">EntrySafe</span>. All rights reserved.
             </p>
             <p className="text-xs text-gray-400 mt-1">
               <span className="text-gold font-semibold">entrysafe.co.za</span> – Empowering South African Entrepreneurs
